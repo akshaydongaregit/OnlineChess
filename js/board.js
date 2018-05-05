@@ -24,3 +24,5 @@ for(var i=1;i<9;i++)
 {
     document.getElementById("ib7"+i+"").setAttribute("style","background:url('img/icons/pawn2.png');background-size:cover");
 }
+
+updatePlayerNote();

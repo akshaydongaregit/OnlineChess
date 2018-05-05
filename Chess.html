@@ -1,62 +1,35 @@
 <html>
     <head>
         <title>T-resk -Play Chess</title>
-    
-    <style>
-        #board{
-            width:610px;
-            height:610px;
-            background: #000;
-            margin-left:350px;
-        }
-        
-        .block
-        {
-            width:76px;
-            height:76px;
-            background:#00f00f;
-            border:.3px solid #000a0f;
-            float: left;
-            box-sizing: border-box;
-        }
-        .img-block
-        {
-            background: url('img/');
-            background-size: cover;
-            width: 75px;
-            height: 75px;
-        }
-        
+    <link rel="stylesheet" href="css/main.css" >
+    <style type="text/css" >
     </style>
-        <!-- 230,70,30
+        
+        <!--    colors of pieces
+            230,70,30
             80,90,220
-            -->
-        <script src="play.js"></script>
+        -->
+        
+        <script src="js/play.js"></script>
         <script>
-        var clicked=null;
+
         function bclick(e)
         {
             //alert("clicked "+e.getAttribute("id"));
-            if(clicked==null)
-            {
-                e.style.border="3px solid blue";
-                clicked=e;
-                valid_Moves(e);
-            }else
-            {
-                var ie=document.getElementById("i"+e.getAttribute("id"));
-                var iclicked=document.getElementById("i"+clicked.getAttribute("id"));
-                ie.style.background=iclicked.style.background;
-                iclicked.style.background="";
-                clicked.style.border="";
-                clicked=null;
-            }
+            handle_Block_Click(e);
         }
+        window.onbeforeunload=function(){return "Do u want to quit"; }
     </script>
     
     </head>
     <body>
-        
+    <div id="player1" class="player">
+    <div id="pname1" class="player-name">
+        Player 1
+    </div>
+    <div id="pt1" class="player-turn"></div>
+    </div>
+    
     <div id="board">
         
         <script>
@@ -75,9 +48,15 @@
             }
             
         </script>
-        
     </div> 
     
+    <div id="player2" class="player">
+        <div id="pname2" class="player-name">
+            Player 2
+        </div>
+        <div id="pt2" class="player-turn"></div>    
+    </div>
+        
         <script>
             
             //setting colors
@@ -102,20 +81,9 @@
                     el.setAttribute("style","background-color:"+clr+";");
                 }
             }
-            
-            
-            /*for(var i=1;i<9;i++)
-            {
-                for(var j=1;j<9;j++)
-                {
-                    var el=document.getElementById("ib"+i+""+j);
-                    
-                    el.style.background="url('')";
-                }
-            }*/
         
         </script>
-        <script type="text/javascript" src="board.js"></script>
+        <script type="text/javascript" src="js/board.js"></script>
     </body>
     
 </html>
