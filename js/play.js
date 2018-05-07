@@ -14,14 +14,20 @@ var cplayer=1;
 /* Defining functions to calculate and mange moves pieces  */
 function updatePlayerNote()
 {
+    var pt1 = document.getElementById("pt1");
+    var pt2 = document.getElementById("pt2");
     if(cplayer>0)
     {
-        document.getElementById("pt2").innerHTML="";
-        document.getElementById("pt1").innerHTML="Your Turn";
+        pt2.innerHTML="";
+        pt2.style.border="";
+        pt1.innerHTML="Your Turn";
+        pt1.style.border="1.5px solid rgba(0,20,0,1)";
     }else if(cplayer<0)
     {
-        document.getElementById("pt1").innerHTML="";
-        document.getElementById("pt2").innerHTML="Your Turn";
+        pt1.innerHTML="";
+        pt1.style.border="";
+        pt2.innerHTML="Your Turn";
+        pt2.style.border="1.5px solid rgba(0,20,0,1)";
     }
 }
 function handle_Block_Click(e)
@@ -52,6 +58,7 @@ function handle_Block_Click(e)
             return false;
         
         e.style.border="3px solid blue";
+        e.style.borderRadius="50%";
         clicked=e;
         show_Valid_Moves(e);
     }else if((blocks[r][c]<0&&blocks[r1][c1]<0)||(blocks[r][c]>0&&blocks[r1][c1]>0))
@@ -59,9 +66,11 @@ function handle_Block_Click(e)
         console.log("\nHomo click");
         //clearing current selected.
         clicked.style.border="";
+        clicked.style.borderRadius="0px";
         clear_Green_Marked();
         
         e.style.border="3px solid blue";
+        e.style.borderRadius="50%";
         clicked=e;
         show_Valid_Moves(e);
     }else
@@ -73,10 +82,14 @@ function handle_Block_Click(e)
 
 function move(e)
 {
+    
     if(green_marked.indexOf(e)<0)
         return false;
     var p1=getPosition(e);
     var p2=getPosition(clicked);
+    
+    updateOutCount(p1);
+    
     blocks[p1.i][p1.j]=blocks[p2.i][p2.j];
     blocks[p2.i][p2.j]=0;
     
@@ -85,6 +98,7 @@ function move(e)
     ie.style.background=iclicked.style.background;
     iclicked.style.background="";
     clicked.style.border="";
+    clicked.style.borderRadius="";
     clicked=null;
     clear_Green_Marked();
     
@@ -166,6 +180,7 @@ function show_Valid_Moves(s)
             //console.log(" Formed Id : "+id);
             var be=document.getElementById(id);
             be.style.border="3px solid #0f0";
+            be.style.borderRadius="50%";
             green_marked.push(be);
         }
 }
@@ -185,7 +200,8 @@ function clear_Green_Marked()
     //console.log("\nClearing "+green_marked.length);
     for(var i=0;i<green_marked.length;i++)
     {
-        green_marked[i].style.border="";        
+        green_marked[i].style.border="";
+        green_marked[i].style.borderRadius="0px";
     }
     green_marked=[];
     //console.log("\nCleared "+green_marked.length);
@@ -404,3 +420,36 @@ for(var i=0;i<pcs.length;i++)
 }
 
 /*--------------------------------------------------------------*/
+
+/*--------------------------------------------------------------
+    Functions and data for keeping track of removed players.
+--------------------------------------------------------------*/
+var outs=[
+    [[12,0],[8,0],[5,0],[2,0],[1,0]],
+    [[-12,0],[-8,0],[-5,0],[-2,0],[-1,0]]
+];
+var pieces_icons=[
+    [[1,"pawn1.png"],[2,"rook1.png"],[5,"knight1.png"],[8,"bishop1.png"],[10,"king1.png"],[12,"queen1.png"]],
+    [[-1,"pawn2.png"],[-2,"rook2.png"],[-5,"knight2.png"],[-8,"bishop2.png"],[-10,"king2.png"],[-12,"queen2.png"]]
+];
+
+function updateOutCount(pos)
+{
+    for(var i=0;i<outs[0].length;i++)
+    {
+        var p=blocks[pos.i][pos.j];
+        if(Math.abs(p)==outs[0][i][0])
+        {
+            if(p>0)
+            {
+                outs[0][i][1]++; 
+                document.getElementById("opcnt1"+i).innerHTML=""+outs[0][i][1];
+            }else
+            {
+                outs[1][i][1]++;
+                document.getElementById("opcnt2"+i).innerHTML=""+outs[1][i][1];
+            }
+            //changeBodyBackground();
+        }
+    }
+}

@@ -24,5 +24,28 @@ for(var i=1;i<9;i++)
 {
     document.getElementById("ib7"+i+"").setAttribute("style","background:url('img/icons/pawn2.png');background-size:cover");
 }
-
 updatePlayerNote();
+setOutPlayerTab();
+function setOutPlayerTab()
+{
+    document.getElementById("opicon20").setAttribute("style","background:url('img/icons/queen2.png') no-repeat;background-size:contain");
+    document.getElementById("opicon21").setAttribute("style","background:url('img/icons/bishop2.png') no-repeat;background-size:contain");
+    document.getElementById("opicon22").setAttribute("style","background:url('img/icons/knight2.png') no-repeat;background-size:contain");
+    document.getElementById("opicon23").setAttribute("style","background:url('img/icons/rook2.png') no-repeat;background-size:contain");
+    document.getElementById("opicon24").setAttribute("style","background:url('img/icons/pawn2.png') no-repeat;background-size:contain");
+    
+    document.getElementById("opicon10").setAttribute("style","background:url('img/icons/queen1.png') no-repeat;background-size:contain");
+    document.getElementById("opicon11").setAttribute("style","background:url('img/icons/bishop1.png') no-repeat;background-size:contain");
+    document.getElementById("opicon12").setAttribute("style","background:url('img/icons/knight1.png') no-repeat;background-size:contain");
+    document.getElementById("opicon13").setAttribute("style","background:url('img/icons/rook1.png') no-repeat;background-size:contain");
+    document.getElementById("opicon14").setAttribute("style","background:url('img/icons/pawn1.png') no-repeat;background-size:contain");
+}
+
+function changeBodyBackground()
+{
+    var r=parseInt(Math.random()*10);
+    if(r==0)
+        changeBodyBackground();
+    else
+        document.body.setAttribute("style","background:url('img/Chess"+r+".jpg') no-repeat;background-size:cover");
+}

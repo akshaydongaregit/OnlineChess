@@ -24,12 +24,21 @@
     </head>
     <body>
     <div id="player1" class="player">
-    <div id="pname1" class="player-name">
-        Player 1
-    </div>
-    <div id="pt1" class="player-turn"></div>
+        <div id="pname1" class="player-name">
+            Player 1
+        </div>
+        <div id="pt1" class="player-turn"></div>
+        <div id="outs" class="out-tab">
+            <script>
+                for(var i=0;i<5;i++)
+                    document.write("<div id=\"opi1"+i+"\" class=\"out-piece\"><div id=\"opicon1"+i+"\" class=\"opicon\"></div></div><div id=\"opcnt1"+i+"\" class=\"out-count\">0</div>");
+            </script>
+        </div>
     </div>
     
+    <div id="blay" >
+    </div>
+        
     <div id="board">
         
         <script>
@@ -48,13 +57,19 @@
             }
             
         </script>
-    </div> 
-    
+    </div>
+        
     <div id="player2" class="player">
         <div id="pname2" class="player-name">
             Player 2
         </div>
-        <div id="pt2" class="player-turn"></div>    
+        <div id="pt2" class="player-turn"></div>
+        <div id="outs" class="out-tab t2">
+            <script>
+                for(var i=0;i<5;i++)
+                    document.write("<div id=\"opi2"+i+"\" class=\"out-piece\"><div id=\"opicon2"+i+"\" class=\"opicon\"></div></div><div id=\"opcnt2"+i+"\" class=\"out-count\">0</div>");
+            </script>
+        </div>
     </div>
         
         <script>
@@ -69,14 +84,14 @@
                     
                     if(i%2!=0)
                         if(j%2!=0)
-                             clr="#fff";
+                             clr="rgba(255,255,255,.8)";
                         else
-                            clr="#000";
+                            clr="rgba(0,0,0,.8)";
                     else
                         if(j%2!=0)
-                            clr="#000";
+                            clr="rgba(0,0,0,.8)";
                         else
-                            clr="#fff";
+                            clr="rgba(255,255,255,.8)";
                     
                     el.setAttribute("style","background-color:"+clr+";");
                 }

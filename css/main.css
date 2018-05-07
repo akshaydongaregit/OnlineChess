@@ -1,13 +1,15 @@
 
 body{
-    background:#000; 
+    background:url('../img/Chess1.jpg') no-repeat;
+    background-size: cover;
+    
 }
 
 .player{
     width: 340px;
     height: 400px;
     background:#fff;
-    border:2px solid rgba(2,2,200,.99);
+    border:3px solid rgba(2,2,200,.2);
     border-radius:1px;
     border-bottom-left-radius: 35px;
     box-sizing:border-box;
@@ -15,17 +17,17 @@ body{
 
 #player1{
     float:left;
-    background: rgba(20,20,180,.1);
+    background: rgba(20,20,180,.2);
 }
 #player2{
     float:right;
     margin-top: -400px;
-    background: rgba(30,20,180,.1);
+    background: rgba(30,20,180,.2);
 }
 
 .player-name
 {
-    background: rgba(20,20,150,.9);
+    background: rgba(20,0,10,.6);
     margin:1%;
     padding: 2%;
     font: bold 105% "Segoe UI",arial;
@@ -34,12 +36,69 @@ body{
 
 .player-turn
 {
-    background: rgba(200,0,10,.9);
+    background: rgba(2,0,100,.5);
+    border:0px solid rgba(0,20,0,1);
     margin:1%;
-    padding: 2%;
+    padding: 1%;
+    height: 35px;
     padding-left: 10%;
-    font: italic 95% "Segoe UI",arial;
-    color:#f81;
+    font: italic 105% "Segoe UI",arial;
+    color:#f80;
+    box-sizing: border-box;
+}
+.out-tab
+{
+    width:50%;
+    height: 300px;
+}
+.out-tab.t2
+{
+    float:right;
+}
+.out-piece[id^="opi2"]
+{
+    float:right;
+    margin-bottom:1% ;
+    border-left:0px solid ;
+    border-right:8px solid ;
+}
+
+.opicon
+{
+    width:50%;
+    height: 50px;
+    background: rgba(0,0,0,1);
+    background: url('../img/icons/pawn1.png') rgba(0,0,0,.01) no-repeat;
+    background-size: contain;
+    margin-left: 20%;
+    margin-top: 10%;
+}
+
+.out-piece
+{
+    margin:0%;
+    width: 45%;
+    height: 50px;
+    background: rgba(0,0,0,.1);
+    border-left:8px solid #000;
+    box-sizing:border-box;
+    float: left;
+}
+
+.out-count
+{
+    background-size: cover;
+    padding: 1%;
+    padding-left: 20%; 
+    margin:1%;
+    margin-top: 0px;
+    width: 50%;
+    height: 50px;
+    background:rgba(0,0,0,.6);
+    float:left;
+    color: rgba(25,200,20,.8);
+    font:bold 110% "Segoe UI";
+    box-sizing:border-box;
 }
 
 #board{
@@ -48,6 +107,7 @@ body{
             background: #000;
             margin-left:360px;
             margin-bottom:0px;
+            opacity:.8;
         }
         
         .block
@@ -66,3 +126,14 @@ body{
             width: 75px;
             height: 75px;
         }
+
+/* #blay
+{
+    position: fixed;
+    left:0;
+    top: 0;
+    width:100%;
+    height: 100%;
+    background-color: rgba(0,0,50,.15);
+}
+*/
