@@ -26,6 +26,7 @@ for(var i=1;i<9;i++)
 }
 updatePlayerNote();
 setOutPlayerTab();
+changeBodyBackground();
 function setOutPlayerTab()
 {
     document.getElementById("opicon20").setAttribute("style","background:url('img/icons/queen2.png') no-repeat;background-size:contain");
