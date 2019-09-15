@@ -9,7 +9,34 @@ var cplayer=1;
 /*---testing---*/
 //alert(""+blocks[3][3]);
 /*------------------------*/
-    
+
+/* ----------------------------------------------------------------- */
+/*   Creating and Initilizing websocket                             */
+let url = 'ws://localhost/ws';
+//let socket = new WebSocket(url);
+//console.log(' socket created ...');
+let playerId;
+var socket = io.connect('http://localhost');
+
+// handle incoming messages
+socket.on('identi', function (data) {
+    console.log('identi:'+JSON.stringify(data));
+    playerId = data.playerId;
+  });  
+socket.on('event', function (event) {
+    console.log('incoming:'+JSON.stringify(event));
+    handle_Block_Click(event.event.blockId);
+  });
+  
+  function fire(event) {
+      let data = {
+          playerId:playerId , 
+          event : event     
+      };
+      console.log('emitting '+JSON.stringify(data));
+      socket.emit('event', data);
+  }
+
 /*---------------------------------------------------------*/    
 /* Defining functions to calculate and mange moves pieces  */
 function updatePlayerNote()
@@ -30,11 +57,11 @@ function updatePlayerNote()
         pt2.style.border="1.5px solid rgba(0,20,0,1)";
     }
 }
-function handle_Block_Click(e)
+function handle_Block_Click(id)
 {
     
     //analyzing.
-    var id=e.getAttribute("id");
+    e = document.getElementById(id);
     var r=parseInt(id.substring(1,2));
     var c=parseInt(id.substring(2,3));
     //console.log(id+" "+r+" "+c+" "+blocks[r-1][c-1]);
