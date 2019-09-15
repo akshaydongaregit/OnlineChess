@@ -12,11 +12,11 @@ var cplayer=1;
 
 /* ----------------------------------------------------------------- */
 /*   Creating and Initilizing websocket                             */
-let url = 'ws://localhost/ws';
-//let socket = new WebSocket(url);
-//console.log(' socket created ...');
+//let url = 'http://localhost:8080';
+let url = "https://onlchess.herokuapp.com";
+
 let playerId;
-var socket = io.connect('http://localhost');
+var socket = io.connect(url);
 
 // handle incoming messages
 socket.on('identi', function (data) {
