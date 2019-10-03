@@ -1,0 +1,241 @@
+/* @import url('https://fonts.googleapis.com/css?family=Ubuntu&display=swap');
+*/
+
+body {
+  font-family: tahoma , 'Ubuntu', sans-serif;
+  display:flex;
+  margin:0px;
+  padding:0px;
+  color:#808386;
+}
+
+.board-body {
+  width: 100%;
+  padding:0px;
+  margin:0px;
+  box-sizing:border-box;
+  display:flex;
+  overflow:auto;
+}
+
+.details-col {
+  background: #ffffff;
+  display: inline-block;
+  width:50%;
+  box-sizing: border-box;
+  margin: 0px;
+  height: 100vh;
+}
+
+.board-col {
+  background: #010c0e;
+  display: inline-block;
+  width: 50%;
+  height: 100vh;
+  box-sizing: border-box;
+  margin: 0px;
+  color:white;
+}
+
+.menu {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  background: red;
+}
+
+.menu.hide {
+  left:-100%;
+}
+
+/*
+players controls 
+*/
+.player {
+  margin:1%;
+  padding: 1%;
+  width:96%;
+  background: #fcfeff;
+  box-shadow:0px 0px 4px 2px #f9f7f7;
+  border:2px solid #eaeaea;
+  border-radius:5px;
+}
+.player #name {
+  color: #7abcef;
+  font:bold 100% consolas, 'Segoe UI';
+  padding: 1%;
+}
+.player .out-list {
+display:;    
+}
+.player .out-list .out-item {
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  background-color: #fcfeff;
+  border:0px solid ;
+}
+.controls {
+  margin-top: 2%;
+  margin:1%;
+  width:98%;
+  background:#ffffff;
+  display:flex;
+  border:2px solid #f5f4f4;
+}
+.control {
+  margin:1%;
+  display:block;
+  background:#5ea1ef;
+  color:white;
+  padding:1%;
+  text-align:center;
+  box-shadow: 0px 0px 3px 1px #e4e4e4;
+  box-sizing:border-box;
+  border-radius:2px;
+  font:normal 100% consolas;
+  width:70px;
+}
+.control:hover {
+  background: #f9fafb;
+  color:#77befb;
+  border-radius:2px;
+}
+
+.board {
+display:grid;
+grid-template-columns: repeat(8,1fr) ;
+height: 100%;
+width: 100%;
+background: gold;
+}
+
+.block{
+  background:red;
+  border: 0px solid ;
+}
+.block.block1 {
+background-color:#274a3f;
+}
+
+.block.block2 {
+background-color:aliceblue;
+}
+.chat-window .chat-box .btn {
+background:#4e94e8;
+border:1px solid #658df3;
+box-sizing:border-box;
+padding:1%;
+ width: 10%;
+color:white;
+font:normal 90% consolas , 'Segoe UI'
+}
+
+.chat-window .chat-box .input {
+background:white;
+border:2px solid aliceblue;
+box-sizing:border-box;
+padding:1%;
+color:rgb(46, 45, 45);
+font:normal 90% consolas , 'Segoe UI';
+width:85%;
+margin-left:1%;
+}
+/*background css*/
+.rook1 {
+background-image: url('../img/icons/rook1.png');
+background-size: cover;
+}
+.rook2 {
+background-image: url('../img/icons/rook2.png');
+background-size: cover;
+}
+
+.knight1 {
+background-image: url('../img/icons/knight1.png');
+background-size: cover;
+}
+.knight2 {
+background-image: url('../img/icons/knight2.png');
+background-size: cover;
+}
+
+.bishop1 {
+background-image: url('../img/icons/bishop1.png');
+background-size: cover;
+}
+.bishop2 {
+background-image: url('../img/icons/bishop2.png');
+background-size: cover;
+}
+.queen1 {
+background-image: url('../img/icons/queen1.png');
+background-size: cover;
+}
+.queen2 {
+background-image: url('../img/icons/queen2.png');
+background-size: cover;
+}
+.king1 {
+background-image: url('../img/icons/king1.png');
+background-size: cover;
+}
+.king2 {
+background-image: url('../img/icons/king2.png');
+background-size: cover;
+}
+.pawn1 {
+background-image: url('../img/icons/pawn1.png');
+background-size: cover;
+}
+.pawn2 {
+background-image: url('../img/icons/pawn2.png');
+background-size: cover;
+}
+.block{
+  text-align: center;
+}
+.block .piece {
+width:90%;
+height:88%;
+margin:5%;
+box-sizing:border-box;
+background-repeat:no-repeat;
+background-size:contain;
+  display: inline-block;
+}
+.piece.active{
+  border-radius: 100px;
+  border:4px solid #ffbd45;
+  box-sizing:border-box;
+  margin: 5%;
+}
+.piece.active-posib{
+  border-radius: 100px;
+  border:4px solid #19bd90;
+  box-sizing:border-box;
+  margin: 5%;
+}
+
+
+.btn {
+  border-radius: 03px;
+}
+
+.btn:hover{
+  background: aliceblue !important;;
+  color: #77befb !important;
+  border:1px solid #a2d2f1 !important;
+}
+
+/*  
+
+rgba(255, 94, 0, 1)
+#2EDA25
+
+red
+#ff5e00
+green
+#2adb20
+
+*/

@@ -16,9 +16,6 @@
 
         function bclick(e)
         {
-            //alert("clicked "+e.getAttribute("id"));
-            console.log('e'+JSON.stringify(e));
-
             var e = {
                 event : 'block-click' , 
                 blockId: e.getAttribute("id")
@@ -35,25 +32,23 @@
         <div id="pname1" class="player-name">
             Player 1
         </div>
-        <div id="pt1" class="player-turn"></div>
-        <div id="outs" class="out-tab">
+    <!--    <div id="outs" class="out-tab">
             <script>
                 for(var i=0;i<5;i++)
                     document.write("<div id=\"opi1"+i+"\" class=\"out-piece\"><div id=\"opicon1"+i+"\" class=\"opicon\"></div></div><div id=\"opcnt1"+i+"\" class=\"out-count\">0</div>");
             </script>
         </div>
-    </div>
+    -->
     
-    <div id="blay" >
     </div>
         
     <div id="board">
         
         <script>
-            //showing divs and board
+            /* showing divs and board */
             for(var i=1;i<9;i++)
             {
-                document.write("<div>");
+                document.write('<div class="board-row">');
                 for(var j=1;j<9;j++)
                 {
                     document.write("<div id=\"b"+i+""+j+"\" class=\"block\" onclick=\"bclick(this)\">"
@@ -71,13 +66,15 @@
         <div id="pname2" class="player-name">
             Player 2
         </div>
-        <div id="pt2" class="player-turn"></div>
+    <!--
         <div id="outs" class="out-tab t2">
             <script>
                 for(var i=0;i<5;i++)
                     document.write("<div id=\"opi2"+i+"\" class=\"out-piece\"><div id=\"opicon2"+i+"\" class=\"opicon\"></div></div><div id=\"opcnt2"+i+"\" class=\"out-count\">0</div>");
             </script>
         </div>
+    -->
+
     </div>
         
         <script>

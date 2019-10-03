@@ -8,12 +8,12 @@ var clicked=null;
 var cplayer=1;
 /*---testing---*/
 //alert(""+blocks[3][3]);
-/*------------------------*/
+/*-----------------------*/
 
 /* ----------------------------------------------------------------- */
 /*   Creating and Initilizing websocket                             */
-//let url = 'http://localhost:8080';
-let url = "https://onlchess.herokuapp.com";
+let url = 'http://localhost:8080';
+l//et url = "https://onlchess.herokuapp.com";
 
 let playerId;
 var socket = io.connect(url);
@@ -39,24 +39,7 @@ socket.on('event', function (event) {
 
 /*---------------------------------------------------------*/    
 /* Defining functions to calculate and mange moves pieces  */
-function updatePlayerNote()
-{
-    var pt1 = document.getElementById("pt1");
-    var pt2 = document.getElementById("pt2");
-    if(cplayer>0)
-    {
-        pt2.innerHTML="";
-        pt2.style.border="";
-        pt1.innerHTML="Your Turn";
-        pt1.style.border="1.5px solid rgba(0,20,0,1)";
-    }else if(cplayer<0)
-    {
-        pt1.innerHTML="";
-        pt1.style.border="";
-        pt2.innerHTML="Your Turn";
-        pt2.style.border="1.5px solid rgba(0,20,0,1)";
-    }
-}
+
 function handle_Block_Click(id)
 {
     
@@ -133,8 +116,7 @@ function move(e)
     if(cplayer<0)
         cplayer=1;
     else
-        cplayer=-1
-    updatePlayerNote();
+        cplayer=-1;
     
     return true;
 }
