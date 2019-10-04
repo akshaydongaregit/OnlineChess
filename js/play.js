@@ -13,7 +13,7 @@ var cplayer=1;
 /* ----------------------------------------------------------------- */
 /*   Creating and Initilizing websocket                             */
 let url = 'http://localhost:8080';
-l//et url = "https://onlchess.herokuapp.com";
+//let url = "https://onlchess.herokuapp.com";
 
 let playerId;
 var socket = io.connect(url);

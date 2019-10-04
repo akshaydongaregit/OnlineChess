@@ -18,7 +18,10 @@
   },
   "homepage": "https://github.com/akshaydongaregit/Chess#readme",
   "dependencies": {
+    "axios": "^0.19.0",
+    "body-parser": "^1.19.0",
     "express": "^4.17.1",
+    "express-session": "^1.16.2",
     "express-ws": "^4.0.0",
     "socket.io": "^2.2.0",
     "socket.io-client": "^2.2.0",
