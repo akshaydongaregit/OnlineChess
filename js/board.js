@@ -12,6 +12,20 @@ $.selectAll = (selector) => {
   return document.querySelectorAll(selector);
 };
 
+$.clone = (aObject) => {
+  if (!aObject)
+    return aObject;
+  
+  let v;
+  let bObject = Array.isArray(aObject) ? [] : {};
+  for (const k in aObject) {
+    v = aObject[k];
+    bObject[k] = (typeof v === "object") ? $.clone(v) : v;
+  }
+
+  return bObject;
+}
+
 /****************/
 
 var board = {} ;
@@ -124,12 +138,9 @@ function movePiece(from , to) {
     $.toggleClass(to.element , fromCls);
     if(boardPos[to.row][to.col] !=0 )
       updateOutDashBoard(to,playerSide);
-    var beforeBoard = boardPos.slice() ;
-    moveHistory.updateHistory(playerSide,from,to,beforeBoard) ;
-    console.log('beforeBoard:'+beforeBoard);
+    var beforeBoard = $.clone(boardPos);
     boardPos[to.row][to.col] = boardPos[from.row][from.col];
     boardPos[from.row][from.col] = 0;
-    console.log('beforeBoard:'+beforeBoard);
     moveHistory.updateHistory(playerSide,from,to,beforeBoard) ;
     togglePlayer();
   }
@@ -353,3 +364,51 @@ function togglePlayer() {
 }
 setBoard();
 updateBoard(piecesRefs,boardPos);
+
+
+//controls handlers
+var controls = { 
+  undo : () => {
+    moveHistory.undo();
+  } ,
+  pause() {
+    Swal.fire({
+      title: 'Game Paused',
+      text: "",
+      type: 'info',
+      confirmButtonColor: '#3085d6',
+      confirmButtonText: 'Resume the Game',
+      allowOutsideClick:false,
+    });
+  } ,
+  giveUp() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You wan't to Give Up the game ...",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Exit'
+    }).then((result) => {
+      if (result.value) {
+        window.close();
+      }
+    });
+  } ,
+  exit() {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You wan't to exit the game ...",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Exit'
+    }).then((result) => {
+      if (result.value) {
+        window.close();
+      }
+    });
+  }
+}

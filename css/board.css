@@ -62,8 +62,9 @@ players controls
 }
 .player #name {
   color: #7abcef;
-  font:bold 100% consolas, 'Segoe UI';
+  font:bold 110% consolas, 'Segoe UI';
   padding: 1%;
+  margin-bottom: 2%;
 }
 .player .out-list {
 display:;    

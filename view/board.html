@@ -10,6 +10,7 @@
         -->
 
         <link rel="stylesheet" href="../css/board.css">
+        <link rel="stylesheet" href="../css/sweetalert2.css">
         
         <title> Chesss | 7e1asdbdss</title>
     </head>
@@ -44,10 +45,10 @@
                     </div>
                 </div>
                 <div class="controls"> 
-                    <div class="control" id="undo" onclick="moveHistory.undo();"> Undo </div>
-                    <div class="control" id="pause"> Pause </div>
-                    <div class="control" id="giveup"> Giveup </div>
-                    <div class="control" id="exit"> Exit </div>
+                    <div class="control" id="undo" onclick="controls.undo();"> Undo </div>
+                    <div class="control" id="pause" onclick="controls.pause();"> Pause </div>
+                    <div class="control" id="giveup" onclick="controls.giveUp();"> Giveup </div>
+                    <div class="control" id="exit" onclick="controls.exit();"> Exit </div>
                     <div> </div>
                 </div>
                 <div class="player" id="opponent" > 
@@ -121,5 +122,6 @@
         -->
 
         <script type="text/javascript" src="../js/board.js"></script>
+        <script type="text/javascript" src="../js/sweetalert2.js"></script>
     </body>
 </html>

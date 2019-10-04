@@ -12,8 +12,8 @@ app.use('/css',express.static('css'));
 app.use('/js',express.static('js'));
 app.use('/img',express.static('img'));
 
-app.get('/', ( req , res ) => {
-    res.sendFile(path.join(__dirname+'/view/Chess.html'));
+app.get('/start', ( req , res ) => {
+    res.sendFile(path.join(__dirname+'/view/board.html'));
 });
 
 const clients = new Set();
