@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+    <head>
+         <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <link rel="stylesheet" href="../css/main.css">
+        <link rel="stylesheet" href="../css/ui.css">
+        <link rel="stylesheet" href="../css/sweetalert2.css">
+        
+        <title> Chesss | New </title>
+    </head>
+    <body>
+        
+        <div class="menu hide">
+            menu
+        </div>
+        <div class="board-body">
+            
+            <div class="">
+                <label> First </label> <br/>
+                <input type="text" name="self" class="txt disabled" /> <br/>
+                <label> Second<br/>
+                </label> <input type="text" name="opponant" class="txt" /> <br/>
+                <button class="btn" onclick="sendRequest()"> Send Request </button> 
+                <div class="status">
+                    <label class="msg" > </label>
+                    
+                    <div class="spinner hide">  
+                        <!-- spinner #3 effect -->
+                        <div class="spinner-eff spinner-eff-3">
+                            <div class="circle circle-1"></div>
+                            <div class="circle circle-2"></div>
+                            <div class="circle circle-3"></div>
+                        </div>    
+                    </div>
+                    
+                </div>  
+            </div>         
+        </div>
+        
+
+        <script type="text/javascript" src="../js/axios.min.js"></script>
+        <script type="text/javascript" src="../js/main.js"></script>
+        <script type="text/javascript" src="../js/sweetalert2.js"></script>
+    </body>
+</html>
