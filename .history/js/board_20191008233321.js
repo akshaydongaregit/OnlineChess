@@ -214,28 +214,10 @@ actions.LOOSE = 12;
 
 function checkWin(piece) {
     if(Math.abs(piece.val)==5) {
-      if(piece.val*playerSide<0) {
-        showWinMsg(true);
-      }else
-        showWinMsg(false);
+      if(piece.val*playerSide) {
+        showWinMsg();
+      }
     }
-}
-
-function showWinMsg(win) {
-  Swal.fire({
-    title: win ? '  Bravo  !!!' : ' Better luck next time !' ,
-    text: win ? "You Have Won the game ." : "Your friend won the game . " ,
-    type: win ? 'success' : 'warning',
-    showCancelButton: win ? true : false ,
-    confirmButtonColor: '#3085d6',
-    cancelButtonColor: '#d33',
-    confirmButtonText: 'Exit the Game' ,
-    allowOutsideClick:false
-  }).then((result) => {
-    if (result.value) {
-      window.close();
-    }
-  });
 }
 
 function movePiece(from , to) {

@@ -223,8 +223,8 @@ function checkWin(piece) {
 
 function showWinMsg(win) {
   Swal.fire({
-    title: win ? '  Bravo  !!!' : ' Better luck next time !' ,
-    text: win ? "You Have Won the game ." : "Your friend won the game . " ,
+    title: win ? '  Bravo  !!!' : ' Better luck next time ' ,
+    text: win ? "You Have Won the game Click to close." : "Your friend won the game Click to close " ,
     type: win ? 'success' : 'warning',
     showCancelButton: win ? true : false ,
     confirmButtonColor: '#3085d6',

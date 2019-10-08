@@ -217,19 +217,19 @@ function checkWin(piece) {
       if(piece.val*playerSide<0) {
         showWinMsg(true);
       }else
-        showWinMsg(false);
+        showWinMsg(true);
     }
 }
 
 function showWinMsg(win) {
   Swal.fire({
-    title: win ? '  Bravo  !!!' : ' Better luck next time !' ,
-    text: win ? "You Have Won the game ." : "Your friend won the game . " ,
-    type: win ? 'success' : 'warning',
-    showCancelButton: win ? true : false ,
+    title: '  Bravo  !!!',
+    text: "You Have Won the game Click to close",
+    type: 'warning',
+    showCancelButton: true,
     confirmButtonColor: '#3085d6',
     cancelButtonColor: '#d33',
-    confirmButtonText: 'Exit the Game' ,
+    confirmButtonText: 'Close' ,
     allowOutsideClick:false
   }).then((result) => {
     if (result.value) {
