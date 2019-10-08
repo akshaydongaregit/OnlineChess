@@ -531,7 +531,7 @@ socket.on('pass-turn', function (event) {
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Agree'
+        confirmButtonText: 'Exit'
       }).then((result) => {
         if (result.value) {
           passControl(actions.DO_UNDO);

@@ -262,7 +262,7 @@ console.log('event : '+event+' data :'+JSON.stringify(data));
     //console.log('undefined gamedetails');
     return;
   }
-  
+
   if(instanceDetails.sockets.second!=undefined)
   instanceDetails.sockets.second.emit(event,data);
   //else

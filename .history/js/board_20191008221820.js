@@ -523,7 +523,6 @@ socket.on('pass-turn', function (event) {
   socket.on('control' , (control)=>{
     console.log('control : '+JSON.stringify(control));
     if(control.action == actions.REQ_UNDO) {
-      if(control.username!=username)
       Swal.fire({
         title: control.username+' is requesting to do undo',
         text: "Are you agree to do undo ?",
@@ -531,7 +530,7 @@ socket.on('pass-turn', function (event) {
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Agree'
+        confirmButtonText: 'Exit'
       }).then((result) => {
         if (result.value) {
           passControl(actions.DO_UNDO);

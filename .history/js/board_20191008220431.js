@@ -521,25 +521,23 @@ socket.on('pass-turn', function (event) {
   });
 
   socket.on('control' , (control)=>{
-    console.log('control : '+JSON.stringify(control));
-    if(control.action == actions.REQ_UNDO) {
-      if(control.username!=username)
+    if(event.action == actions.REQ_UNDO) {
       Swal.fire({
-        title: control.username+' is requesting to do undo',
+        title: control.username+' is requesting undo',
         text: "Are you agree to do undo ?",
         type: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Agree'
+        confirmButtonText: 'Exit'
       }).then((result) => {
         if (result.value) {
-          passControl(actions.DO_UNDO);
+          
         }
       });
 
-    }else if(control.action == actions.DO_UNDO){
-        moveHistory.undo();
+    }else if(event.action == actions.DO_UNDO){
+
     }
 
   });

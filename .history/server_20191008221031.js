@@ -252,28 +252,49 @@ instance.updateSock = (gameId , username,sock) => {
   }
 };
 
-instance.pass = (event,data) => {
-console.log('event : '+event+' data :'+JSON.stringify(data));
+instance.pass = (event,args) => {
+//console.log('event : '+JSON.stringify(event));
 
-  let instanceDetails = instances.get(parseInt(data.gameId));
-  let gameDetails = games.get(parseInt(data.gameId));
+  let instanceDetails = instances.get(parseInt(event.gameId));
+  let gameDetails = games.get(parseInt(event.gameId));
 
   if(gameDetails==undefined) {
     //console.log('undefined gamedetails');
     return;
   }
-  
+
   if(instanceDetails.sockets.second!=undefined)
-  instanceDetails.sockets.second.emit(event,data);
+  instanceDetails.sockets.second.emit('pass',event);
   //else
     //console.log('second socket und');
   if(instanceDetails.sockets.first!=undefined)
-    instanceDetails.sockets.first.emit(event,data);
+    instanceDetails.sockets.first.emit('pass',event);
   //else
     //console.log('first socket und');
 
 } ;
 
+instance.passChat = (msg) => {
+  //console.log('msg : '+JSON.stringify(msg));
+  
+    let instanceDetails = instances.get(parseInt(msg.gameId));
+    let gameDetails = games.get(parseInt(msg.gameId));
+  
+    if(gameDetails==undefined) {
+      //console.log('undefined gamedetails');
+      return;
+    }
+  
+    if(instanceDetails.sockets.second!=undefined)
+    instanceDetails.sockets.second.emit('chat',msg);
+    //else
+      //console.log('second socket und');
+    if(instanceDetails.sockets.first!=undefined)
+      instanceDetails.sockets.first.emit('chat',msg);
+    //else
+      //console.log('first socket und');
+  
+  } ;
 
 io.on('connection', function (socket) {
 
@@ -288,14 +309,14 @@ io.on('connection', function (socket) {
     //socket.emit('instance', inst);
     
     socket.on('pass', function (event) {
-        try { instance.pass('pass',event); }catch(err){ res.send('err : '+err); }    
+        try { instance.pass(event); }catch(err){ res.send('err : '+err); }    
       });
     socket.on('control', function (event) {
-        try { instance.pass('control',event); }catch(err){ res.send('err : '+err); }    
+        try { instance.pass(event); }catch(err){ res.send('err : '+err); }    
     });
     
     socket.on('chat' , (msg) => {
-        try{ instance.pass('chat' ,msg); }catch(err){ res.send('err : '+err); }  
+        try{ instance.passChat(msg); }catch(err){ res.send('err : '+err); }  
     });  
   }catch(err){
     res.send('err : '+err);

@@ -262,9 +262,9 @@ console.log('event : '+event+' data :'+JSON.stringify(data));
     //console.log('undefined gamedetails');
     return;
   }
-  
+  //check for 
   if(instanceDetails.sockets.second!=undefined)
-  instanceDetails.sockets.second.emit(event,data);
+    instanceDetails.sockets.second.emit(event,data);
   //else
     //console.log('second socket und');
   if(instanceDetails.sockets.first!=undefined)

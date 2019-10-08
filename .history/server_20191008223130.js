@@ -253,7 +253,8 @@ instance.updateSock = (gameId , username,sock) => {
 };
 
 instance.pass = (event,data) => {
-console.log('event : '+event+' data :'+JSON.stringify(data));
+
+  console.log('event : '+event+' data :'+JSON.stringify(data));
 
   let instanceDetails = instances.get(parseInt(data.gameId));
   let gameDetails = games.get(parseInt(data.gameId));
@@ -262,9 +263,14 @@ console.log('event : '+event+' data :'+JSON.stringify(data));
     //console.log('undefined gamedetails');
     return;
   }
-  
+
+  //check for control
+  let singltonFlag = false; 
+  if(event=='control')
+    singltonFlag = true;
+ 
   if(instanceDetails.sockets.second!=undefined)
-  instanceDetails.sockets.second.emit(event,data);
+    instanceDetails.sockets.second.emit(event,data);
   //else
     //console.log('second socket und');
   if(instanceDetails.sockets.first!=undefined)

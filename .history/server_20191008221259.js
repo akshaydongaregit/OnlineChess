@@ -253,7 +253,7 @@ instance.updateSock = (gameId , username,sock) => {
 };
 
 instance.pass = (event,data) => {
-console.log('event : '+event+' data :'+JSON.stringify(data));
+//console.log('event : '+JSON.stringify(event));
 
   let instanceDetails = instances.get(parseInt(data.gameId));
   let gameDetails = games.get(parseInt(data.gameId));
@@ -262,7 +262,7 @@ console.log('event : '+event+' data :'+JSON.stringify(data));
     //console.log('undefined gamedetails');
     return;
   }
-  
+
   if(instanceDetails.sockets.second!=undefined)
   instanceDetails.sockets.second.emit(event,data);
   //else
@@ -274,6 +274,27 @@ console.log('event : '+event+' data :'+JSON.stringify(data));
 
 } ;
 
+instance.passChat = (msg) => {
+  //console.log('msg : '+JSON.stringify(msg));
+  
+    let instanceDetails = instances.get(parseInt(msg.gameId));
+    let gameDetails = games.get(parseInt(msg.gameId));
+  
+    if(gameDetails==undefined) {
+      //console.log('undefined gamedetails');
+      return;
+    }
+  
+    if(instanceDetails.sockets.second!=undefined)
+    instanceDetails.sockets.second.emit('chat',msg);
+    //else
+      //console.log('second socket und');
+    if(instanceDetails.sockets.first!=undefined)
+      instanceDetails.sockets.first.emit('chat',msg);
+    //else
+      //console.log('first socket und');
+  
+  } ;
 
 io.on('connection', function (socket) {
 

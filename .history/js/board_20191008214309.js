@@ -253,8 +253,7 @@ var moveHistory = {
   undo : () => {
     var move = movesHistory.pop();
     updateBoard(piecesRefs,move.boardBefore);
-    boardPos = $.clone(move.boardBefore) ;
-    playerTurn.toggle();
+    boardPos = Array.from( move.boardBefore) ;
   }
 };
 
@@ -442,14 +441,9 @@ updateBoard(piecesRefs,boardPos);
 
 
 //controls handlers
-actions.REQ_UNDO = 6;
-actions.DO_UNDO = 7;
-actions.REJECT_UNDO = 8;
-actions.ACC_UNDO = 9;
-
 var controls = { 
   undo : () => {
-    passControl(actions.REQ_UNDO);
+    moveHistory.undo();
   } ,
   pause() {
     Swal.fire({
@@ -519,39 +513,6 @@ socket.on('pass-turn', function (event) {
       handleRowColClick(event.event.data.row , event.event.data.row);
     }
   });
-
-  socket.on('control' , (control)=>{
-    console.log('control : '+JSON.stringify(control));
-    if(control.action == actions.REQ_UNDO) {
-      if(control.username!=username)
-      Swal.fire({
-        title: control.username+' is requesting to do undo',
-        text: "Are you agree to do undo ?",
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Agree'
-      }).then((result) => {
-        if (result.value) {
-          passControl(actions.DO_UNDO);
-        }
-      });
-
-    }else if(control.action == actions.DO_UNDO){
-        moveHistory.undo();
-    }
-
-  });
-
-  function passControl(action) {
-    data = {
-      username : username ,
-      gameId : gameDetails.id ,
-      action : action
-    }
-    socket.emit('control' , data);
-  }
 
   function passAction(action , row, col) {
       let data = {
