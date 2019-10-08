@@ -65,29 +65,12 @@ var boardPos = gameDetails.board;
 ]; */
 
 var activePiece ;
-var playerSide  ;
-var playerTurn = {
-  val : undefined,
-  turn : (t) => {
-    if(t == undefined) return this.val; else this.val = t;
-  },
-  update : (game) => {    
-    if(username == game.turn)
-      this.val = 1 ;
-    else
-      this.val = -1 ;
-
-  }
-};
+var playerSide = 1 ;
+var playerTurn = 1;
 
 function setBoard() {
 
-  if(username == gameDetails.firstPlayer)
-    playerSide = -1;
-  else
-    playerSide = 1;
-
-  playerTurn.update(gameDetails);
+  //playerTurn = gameDetails.turn;
 
   $.select('#opponent #name').innerHTML = gameDetails.firstPlayer;
   $.select('#im #name').innerHTML = gameDetails.secondPlayer;
@@ -104,7 +87,7 @@ function setBoard() {
 }
 
 function updateBoard( piecesRefs , piecesPos) {
-  //console.log('updating .. '+piecesRefs+' '+piecesPos );
+  console.log('updating .. '+piecesRefs+' '+piecesPos );
   for(var i=0;i<piecesRefs.length;i++) {
     var piece = piecesRefs[i];
     var row = piece.getAttribute('row');
@@ -119,57 +102,35 @@ function handleBlockClick(block){
   var row = child.getAttribute('row');
   var col = child.getAttribute('col');
  
-  handlePieceClick(row,col);
+  //fire event from here
+  passClick(row,col);
+  //handleRowColClick(row,col);
+}
+function handleRowColClick(row , col ) {
+  var piece = $.select('.piece[row="'+row+'"][col="'+col+'"]');
+  handlePieceClick(piece);
 }
 
-function pieceAt(row,col) {
+function handlePieceClick(piece) {
+
+  var row = piece.getAttribute('row');
+  var col = piece.getAttribute('col');
   var val = boardPos[row][col];
-  var el = $.select('.piece[row="'+row+'"][col="'+col+'"]');
-  
-  var piece = {
-    element : el ,
-    getElement : () => { return $.select('.piece[row="'+row+'"][col="'+col+'"]'); } ,
+  var pieceObj = {
+    element : piece ,
     row : row ,
     col : col ,
-    val : val
+    pieceVal : val
   };
-  piece.isWithinMoves = (posblMoves) => { isWithinMoves(row,col,posblMoves) };
-  return piece;
-}
-function minPieceAt(row,col) {
-  var val = boardPos[row][col];
-  var piece = {
-    element:undefined,
-    getElement : () => { return $.select('.piece[row="'+this.row+'"][col="'+this.col+'"]'); } ,
-    row : row ,
-    col : col ,
-    val : val
-  };
-  return piece;
-}
 
-function isWithinMoves(row,col,posblMoves) {
-  for(var i=0;i<posblMoves.length;i++)
-    if(posblMoves[i][0] == row && posblMoves[i][1] == col )
-      return true;
-  return false;
-}
-
-function handlePieceClick(row,col) {
-
-  var action = identifyAction(row,col);
-  //console.log('action ' + action);
+  var action = identifyAction(pieceObj);
+  console.log('action ' + action);
   
-  //doAction(action,row,col);
-
-  if(! action == actions.INVALID)
-    passAction(action , row, col);
-}
-function doAction(action,row,col) {
   if(action==actions.ACTIVATE_AND_SHOW_MOVES)
-    activateAndShowValidMoves(row,col);
+    activateAndShowValidMoves(pieceObj);
   else if(action==actions.PLAY_MOVE)
-    playMove(row,col);
+    playMove(pieceObj);
+    
 }
 
 var actions = {
@@ -179,12 +140,9 @@ var actions = {
   ACTIVATE_AND_SHOW_MOVES : 3,
   PLAY_MOVE : 4 ,
 };
-function identifyAction(row,col) {
-  var val = boardPos[row][col];
-  //console.log('val'+val+' turn '+playerTurn.turn());
-  if(playerTurn.turn()<0)
-    return actions.INVALID;
-
+function identifyAction(piece) {
+  var val = boardPos[piece.row][piece.col];
+  console.log('val'+val);
   if(val*playerSide <= 0 && activePiece==undefined )
     return actions.INVALID
   else
@@ -195,39 +153,46 @@ function identifyAction(row,col) {
       return actions.ACTIVATE_AND_SHOW_MOVES;
     else 
       return actions.PLAY_MOVE;
+   
 }
 
-function playMove(row,col) {
-  let piece = pieceAt(row,col);
-  if(activePiece!=undefined && isWithinMoves(row,col,activePossibleMoves) ) {
+function playMove(piece) {
+  if(activePiece!=undefined && isValidPosibleMove(piece) ) {
     $.toggleClass(activePiece.element , 'active');
     movePiece(activePiece , piece);
     clearPossibleMoves();
     activePiece = undefined;
-    playerTurn.turn(playerTurn.turn()*-1);
   }
 }
 
+function isValidPosibleMove(piece) {
+  var row = piece.row;
+  var col = piece.col;
+  for(var i=0;i<activePossibleMoves.length;i++)
+    if(activePossibleMoves[i][0] == row && activePossibleMoves[i][1] == col )
+      return true;
+  return false;
+
+}
 
 function movePiece(from , to) {
   var fromCls = iconsSet[boardPos[from.row][from.col]];
   var toCls = iconsSet[boardPos[to.row][to.col]];
   if(fromCls != '' ) {
-    $.toggleClass(from.getElement(),fromCls);
+    $.toggleClass(from.element,fromCls);
   }
   if(toCls != '') {
-    $.toggleClass(to.getElement(),toCls);
+    $.toggleClass(to.element,toCls);
   }
 
   if(fromCls != '') {
-    $.toggleClass(to.getElement() , fromCls);
+    $.toggleClass(to.element , fromCls);
     if(boardPos[to.row][to.col] !=0 )
-      updateOutDashBoard(to,to.val>0? 1 : -1);
-
+      updateOutDashBoard(to,playerSide);
     var beforeBoard = $.clone(boardPos);
     boardPos[to.row][to.col] = boardPos[from.row][from.col];
     boardPos[from.row][from.col] = 0;
-    moveHistory.updateHistory(to.val>0?1:-1,from,to,beforeBoard) ;
+    moveHistory.updateHistory(playerSide,from,to,beforeBoard) ;
     //togglePlayer();
   }
 
@@ -235,10 +200,11 @@ function movePiece(from , to) {
 
 }
 
+
 var movesHistory = [];
 var moveHistory = {
   updateHistory : (player , from , to , boardBefore , boardAfter) => {
-    //console.log('boardBefore :'+boardBefore);
+    console.log('boardBefore :'+boardBefore);
     var move = {
       player : player ,
       from : from ,
@@ -255,77 +221,42 @@ var moveHistory = {
   }
 };
 
-var activePossibleMoves;
+function activateAndShowValidMoves(piece) {
+  if( activePiece != undefined )
+    $.toggleClass(activePiece.element,'active');
+  activePiece = piece;
+  $.toggleClass(piece.element,'active');
+
+  showPossibleMoves(piece);
+}
 
 function int(val) {
   return parseInt(val);
 }
 
-function activateAndShowValidMoves(row,col) {
-  if( activePiece != undefined )
-    $.toggleClass(activePiece.element,'active');
-  activePiece = pieceAt(row,col);
-  $.toggleClass(activePiece.element,'active');
-
-  var val = boardPos[row][col];
-  //console.log('val'+val);
-  var posblMoves = moves.possibleMoves[val](boardPos,activePiece,int(row),int(col));
-  //console.log('psblmovs :'+JSON.stringify(posblMoves));
-  
-  showPossibleMoves(posblMoves);
-}
-
-function showPossibleMoves(posblMoves) {
-
-  //clear previous highlighted moves.
-  clearPossibleMoves();
-  
-  //code to draw border on pices
-  for(var i=0;i<posblMoves.length;i++) {
-    var row = posblMoves[i][0];
-    var col = posblMoves[i][1];
-    //console.log(' style '+'.piece[row="'+row+'"][col="'+col+'"]');
-    $.toggleClass($.select('.piece[row="'+row+'"][col="'+col+'"]') , 'active-posib');
-  }
-
-  //store current highlighted moves;
-  activePossibleMoves = posblMoves;
-}
-
-function clearPossibleMoves() {
-  if(activePossibleMoves != undefined )
-    for(var i=0;i<activePossibleMoves.length;i++) {
-      var row = activePossibleMoves[i][0];
-      var col = activePossibleMoves[i][1];
-      $.toggleClass($.select('.piece[row="'+row+'"][col="'+col+'"]') , 'active-posib');
-    }
-  activePossibleMoves = undefined;
-}
-
-
 var moves = {
   possibleMoves : {
     '0':[] ,
     '1': (boardPoss , piece,row,col) => {
-        return moves.filters.boundaryFilter(moves.filters.pawnFilter([[[row+1,col],[row+2,col]],[[row+1,col-1],[row+1,col+1]]],piece));
+        return moves.filters.boundaryFilter( moves.filters.pawnFilter( [ [ [row+1,col] , [row+2,col] ] , [ [row+1,col-1] , [row+1,col+1] ] ] , piece ) );
     },
     '2': (boardPoss , piece,row,col) => {
-        return moves.filters.obstacleFilter(moves.filters.boundaryFilter(moves.crossRange([row+1,col],[8,8] , [1,0])) ,piece)
-        .concat( moves.filters.obstacleFilter(moves.filters.boundaryFilter(moves.crossRange([row,col+1],[8,8] , [0,1])) , piece))
-        .concat( moves.filters.obstacleFilter(moves.filters.boundaryFilter(moves.crossRange([row,col-1],[-1,-1] , [0,-1])) , piece))
-        .concat( moves.filters.obstacleFilter(moves.filters.boundaryFilter(moves.crossRange([row-1,col],[-1,-1] , [-1,0])) , piece )) ;
+        return moves.filters.obstacleFilter(moves.filters.boundaryFilter(moves.crossRange([row+1,col],[8,8] , [1,0])))
+        .concat( moves.filters.obstacleFilter(moves.filters.boundaryFilter(moves.crossRange([row,col+1],[8,8] , [0,1]))))
+        .concat( moves.filters.obstacleFilter(moves.filters.boundaryFilter(moves.crossRange([row,col-1],[-1,-1] , [0,-1]))))
+        .concat( moves.filters.obstacleFilter(moves.filters.boundaryFilter(moves.crossRange([row-1,col],[-1,-1] , [-1,0]))) ) ;
     } ,
     '3': (boardPoss , piece,row,col) => {
-      return moves.filters.selfFilter( moves.filters.boundaryFilter( [ [row+2,col+1] , [row-2,col+1] ,[row+2,col-1] , [row-2,col-1] , [row+1,col+2] , [row+1,col-2] ,[row-1,col+2] , [row-1,col-2] ] ), piece);
+      return moves.filters.selfFilter( moves.filters.boundaryFilter( [ [row+2,col+1] , [row-2,col+1] ,[row+2,col-1] , [row-2,col-1] , [row+1,col+2] , [row+1,col-2] ,[row-1,col+2] , [row-1,col-2] ] ));
      } , 
     '4': (boardPoss , piece,row,col) => {
-      return moves.filters.obstacleFilter( moves.filters.boundaryFilter( moves.crossRange([row+1,col+1],[8,8],[1,1])),piece)
-      .concat( moves.filters.obstacleFilter( moves.filters.boundaryFilter(moves.crossRange([row+1,col-1],[8,-8],[1,-1])),piece))
-      .concat( moves.filters.obstacleFilter( moves.filters.boundaryFilter(moves.crossRange([row-1,col+1],[-8,8],[-1,1])),piece))
-      .concat( moves.filters.obstacleFilter( moves.filters.boundaryFilter(moves.crossRange([row-1,col-1],[-8,-8],[-1,-1])),piece)) ;
+      return moves.filters.obstacleFilter( moves.filters.boundaryFilter( moves.crossRange([row+1,col+1],[8,8],[1,1])))
+      .concat( moves.filters.obstacleFilter( moves.filters.boundaryFilter(moves.crossRange([row+1,col-1],[8,-8],[1,-1]))))
+      .concat( moves.filters.obstacleFilter( moves.filters.boundaryFilter(moves.crossRange([row-1,col+1],[-8,8],[-1,1]))))
+      .concat( moves.filters.obstacleFilter( moves.filters.boundaryFilter(moves.crossRange([row-1,col-1],[-8,-8],[-1,-1])))) ;
     } ,
      '5': (boardPoss , piece,row,col) => {
-      return moves.filters.selfFilter( moves.filters.boundaryFilter( [ [row+1,col] , [row+1,col+1] , [row,col+1] , [row-1,col+1] ,[row-1,col] , [row-1,col-1],[row,col-1] , [row+1,col-1] ] ) , piece) ;
+      return moves.filters.selfFilter( moves.filters.boundaryFilter( [ [row+1,col] , [row+1,col+1] , [row,col+1] , [row-1,col+1] ,[row-1,col] , [row-1,col-1],[row,col-1] , [row+1,col-1] ] )) ;
      } ,
     '6': (boardPoss , piece,row,col) => { 
       return moves.possibleMoves['2'](boardPoss , piece,row,col).concat(moves.possibleMoves['4'](boardPoss , piece,row,col));
@@ -380,8 +311,7 @@ moves.filters = {
         filtered.push(unfiltered[i]);
     return filtered;
   } ,
-  obstacleFilter : (unfiltered,piece,flag) => {
-    //console.log('piece:'+piece+' '+flag);
+  obstacleFilter : (unfiltered,flag) => {
     if(unfiltered==undefined)
       return [];
 
@@ -390,41 +320,69 @@ moves.filters = {
       if( boardPos[ unfiltered[i][0] ][unfiltered[i][1] ] == 0 )
         filtered.push(unfiltered[i]);
       else {
-        if(flag == undefined && boardPos[ unfiltered[i][0] ][unfiltered[i][1] ] * piece.val <= 0 )
+        if(flag == undefined && boardPos[ unfiltered[i][0] ][unfiltered[i][1] ] * playerSide <= 0 )
           filtered.push(unfiltered[i]);
           break;
       }
     }
     return filtered;
   } ,
-  selfFilter : (unfiltered,piece) => {
+  selfFilter : (unfiltered) => {
     var filtered = [];
     for(var i=0;i<unfiltered.length;i++)
-        if(boardPos[ unfiltered[i][0] ][unfiltered[i][1] ] * piece.val <= 0 )
+        if(boardPos[ unfiltered[i][0] ][unfiltered[i][1] ] * playerSide <= 0 )
           filtered.push(unfiltered[i]);
     
     return filtered;
   }  ,
   pawnFilter : (unfiltered,piece) => {
     var filtered = [];
-    //console.log(unfiltered+'\n'+piece.row);
+    console.log(unfiltered+'\n'+piece.row);
     unfiltered[0] = moves.filters.obstacleFilter(unfiltered[0],true);
     if(unfiltered[0]!=undefined && unfiltered[0].length>0)
-    if( piece.val>0 ? piece.row == 1 : piece.row==6 )
+    if( piece.pieceVal>0 ? piece.row == 1 : piece.row==6 )
       filtered = filtered.concat(unfiltered[0]);
     else
       filtered.push(unfiltered[0][0]);
 
-      //console.log(filtered);
+      console.log(filtered);
 
     for(var i=0;i<unfiltered[1].length;i++)
-        if(boardPos[ unfiltered[1][i][0] ][unfiltered[1][i][1] ] * piece.val < 0 )
+        if(boardPos[ unfiltered[1][i][0] ][unfiltered[1][i][1] ] * piece.pieceVal < 0 )
           filtered.push(unfiltered[1][i]);
 
     return filtered;
   } ,
 };
 
+var activePossibleMoves;
+
+function showPossibleMoves(piece) {
+  
+  clearPossibleMoves();
+
+  var val = boardPos[piece.row][piece.col];
+  console.log('val'+val);
+  var posblMoves = moves.possibleMoves[val](boardPos,piece,int(piece.row),int(piece.col));
+  console.log(posblMoves);
+
+  for(var i=0;i<posblMoves.length;i++) {
+    var row = posblMoves[i][0];
+    var col = posblMoves[i][1];
+    console.log(' style '+'.piece[row="'+row+'"][col="'+col+'"]');
+    $.toggleClass($.select('.piece[row="'+row+'"][col="'+col+'"]') , 'active-posib');
+  }
+  activePossibleMoves = posblMoves;
+}
+function clearPossibleMoves() {
+  if(activePossibleMoves != undefined )
+    for(var i=0;i<activePossibleMoves.length;i++) {
+      var row = activePossibleMoves[i][0];
+      var col = activePossibleMoves[i][1];
+      $.toggleClass($.select('.piece[row="'+row+'"][col="'+col+'"]') , 'active-posib');
+    }
+  activePossibleMoves = undefined;
+}
 
 
 function updateOutDashBoard(piece,playerSide) {
@@ -461,7 +419,7 @@ var controls = {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Give Up'
+      confirmButtonText: 'Exit'
     }).then((result) => {
       if (result.value) {
         window.close();
@@ -496,57 +454,37 @@ var socket = io.connect(url  , { query : 'username='+username+'&gameId='+gameDet
 
 // handle incoming messages
 socket.on('instance', function (data) {
-    //console.log('instance:'+JSON.stringify(data));
+    console.log('instance:'+JSON.stringify(data));
     instance = data.instance;
   });  
 
 socket.on('pass', function (event) {
-    //console.log('incoming:'+JSON.stringify(event));
-    doAction(event.action,event.data.row,event.data.col);
-  });
-
-socket.on('pass-turn', function (event) {
-    //console.log('incoming:'+JSON.stringify(event));
+    console.log('incoming:'+JSON.stringify(event));
     if(event.event.action=='click') {
       handleRowColClick(event.event.data.row , event.event.data.row);
     }
   });
 
-  function passAction(action , row, col) {
+socket.on('pass-turn', function (event) {
+    console.log('incoming:'+JSON.stringify(event));
+    if(event.event.action=='click') {
+      handleRowColClick(event.event.data.row , event.event.data.row);
+    }
+  });
+
+  function passClick(row, col) {
       let data = {
         username : username , 
         gameId : gameDetails.id ,
-        action : action ,
-        data : {
+        event : { 
+          action : 'click' ,
+          data : {
             row : row ,
             col : col
-          }
+          } 
+        }
       };
 
-      //console.log('emitting '+JSON.stringify(data));
+      console.log('emitting '+JSON.stringify(data));
       socket.emit('pass', data);
   }
-
-  function checkEnter(e) {
-    if(e.keyCode==13)
-      sendMessage();
-  }
-
-  function sendMessage() {
-    let msgBox = $.select('input#chat-box');
-    let msg = {
-      username : username , 
-        gameId : gameDetails.id ,
-        msg : msgBox.value
-    }
-    msgBox.value = '';
-    socket.emit('chat' , msg);
-  }
-  socket.on('chat',(msg)=> {
-    //('got '+JSON.stringify(msg));
-    let html = '';
-    var cls = msg.username == username ? 'from' : 'to';
-    html+=`<div class="chat `+ cls +`">`+msg.msg+`</div>`;
-    let chatBox = $.select('.chats');
-    chatBox.innerHTML = chatBox.innerHTML + html;
-  });

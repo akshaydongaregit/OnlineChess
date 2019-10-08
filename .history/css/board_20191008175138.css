@@ -76,18 +76,18 @@ players controls
 }
 .player #name {
   color: #909192;
-  font:bold 110% 'Ubuntu' , sans-serif;
+  font:bold 110% consolas, 'Segoe UI';
   padding: 1%;
   margin-bottom: 2%;
 }
 .player .out-list {
-display:block;    
+display:;    
 }
 .player .out-list .out-item {
   display: inline-block;
   width: 50px;
   height: 50px;
-  background-color: #fcfeff00;
+  background-color: #fcfeff;
   border:0px solid ;
 }
 .controls {
@@ -117,6 +117,9 @@ display:block;
   background: #ffb347;  /* fallback for old browsers */
 background: -webkit-linear-gradient(to right, #ffcc33, #ffb347);  /* Chrome 10-25, Safari 5.1-6 */
 background: linear-gradient(to right, #ffcc33, #ffb347); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+.control#undo {
+
 }
 
 .control:hover {
@@ -170,23 +173,19 @@ background-color:aliceblue;
   min-height:75%;
   max-height:78%;
 }
-.chat {
-  margin: 1%;
-  padding:1%;
-  padding-left:1%;
-  padding-right:1%;
-  border-radius:5px;
-  font:normal 90% 'Ubuntu' , Sans-serif ;
-}
 .chat.from {
   float:right;
-  background:#7dff7a;
-  color:#292902;
+  margin: 1%;
+  padding:3px;
+  background:red;
+  border-radius:5px;
 }
 .chat.to {
   float:left;
-  background:white;
-  color:#010d17;
+  margin: 1%;
+  padding:2px;
+  background:red;
+  border-radius:5px;
 }
 
 .chat-box {
@@ -203,7 +202,8 @@ border:2px solid #7da3f1;
 padding:1%;
 width: 13%;
 color:white;
-font:normal 95% 'Ubuntu' , sans-serif;
+font:normal 90% consolas , 'Segoe UI';
+\
 }
 
 .chat-window .chat-box .input {

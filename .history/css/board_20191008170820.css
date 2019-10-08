@@ -1,16 +1,6 @@
 /* @import url('https://fonts.googleapis.com/css?family=Ubuntu&display=swap');
 */
 
-@font-face {
-  font-family: "Ubuntu";
-  src: url("./fonts/Ubuntu-Regular.ttf");
-}
-@font-face {
-  font-family: "Ubuntu";
-  src: url("./fonts/Ubuntu-Bold.ttf");
-  font-weight: bold;
-}
-
 body {
   font-family: tahoma , 'Ubuntu', sans-serif;
   display:flex;
@@ -64,7 +54,7 @@ background: #ada99600;  /* fallback for old browsers */
 players controls 
 */
 .player {
-  /*height:80px;*/
+  height:80px;
   margin:1%;
   padding: 1%;
   width:96%;
@@ -76,18 +66,18 @@ players controls
 }
 .player #name {
   color: #909192;
-  font:bold 110% 'Ubuntu' , sans-serif;
+  font:bold 110% consolas, 'Segoe UI';
   padding: 1%;
   margin-bottom: 2%;
 }
 .player .out-list {
-display:block;    
+display:;    
 }
 .player .out-list .out-item {
   display: inline-block;
   width: 50px;
   height: 50px;
-  background-color: #fcfeff00;
+  background-color: #fcfeff;
   border:0px solid ;
 }
 .controls {
@@ -117,6 +107,9 @@ display:block;
   background: #ffb347;  /* fallback for old browsers */
 background: -webkit-linear-gradient(to right, #ffcc33, #ffb347);  /* Chrome 10-25, Safari 5.1-6 */
 background: linear-gradient(to right, #ffcc33, #ffb347); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+.control#undo {
+
 }
 
 .control:hover {
@@ -148,47 +141,15 @@ background-color:#274a3f;
 background-color:aliceblue;
 }
 .chat-window {
-  margin-left:.5%;
-  position: absolute;
-  top: 50%;
+  margin:.5%;
+  position: fixed;
+  top: 68%;
   width: 48%;
-  height:48%;
+  height:30%;
   background:#e1e8e8;
   border-radius:5px;
   box-sizing:border-box;
 }
-.chats{
-  margin:1%;
-  box-sizing:border-box;
-  padding:1%;
-  position:absolute;
-  top:1%;
-  width:98%;
-  background:#d3dad9;
-  overflow:auto;
-  border-radius:5px;
-  min-height:75%;
-  max-height:78%;
-}
-.chat {
-  margin: 1%;
-  padding:1%;
-  padding-left:1%;
-  padding-right:1%;
-  border-radius:5px;
-  font:normal 90% 'Ubuntu' , Sans-serif ;
-}
-.chat.from {
-  float:right;
-  background:#7dff7a;
-  color:#292902;
-}
-.chat.to {
-  float:left;
-  background:white;
-  color:#010d17;
-}
-
 .chat-box {
   box-sizing:border-box;
   padding:1%;
@@ -198,23 +159,24 @@ background-color:aliceblue;
 }
 
 .chat-window .chat-box .btn {
-background:#7da3f1;
-border:2px solid #7da3f1;
+background:#4e94e8;
+border:1px solid #658df3;
+box-sizing:border-box;
 padding:1%;
-width: 13%;
+ width: 10%;
 color:white;
-font:normal 95% 'Ubuntu' , sans-serif;
+font:normal 90% consolas , 'Segoe UI'
 }
 
 .chat-window .chat-box .input {
 background:white;
-border:2px solid #b0cce4;
+border:2px solid aliceblue;
 box-sizing:border-box;
 padding:1%;
 color:rgb(46, 45, 45);
 font:normal 90% consolas , 'Segoe UI';
 width:85%;
-margin-left:0%;
+margin-left:1%;
 border-radius:4px;
 }
 /*background css*/

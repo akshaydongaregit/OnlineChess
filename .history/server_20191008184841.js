@@ -28,10 +28,10 @@ app.use('/',(req,res,next)=> {
   else if(url.includes('login') || url.includes('.js') || url.includes('.css') || url.includes('.ttf') )
     next();
   else if(req.session.username && req.session.username!=undefined){
-    //console.log('req '+req.session.username);
+    console.log('req '+req.session.username);
     next();
   }else{
-    //console.log(req.url); 
+    console.log(req.url); 
     res.redirect('/login');
   }
 });
@@ -44,7 +44,7 @@ let activeUsers = new Map();
 
 app.post('/login' , (req,res) => {
   let username = req.body.username;
-  //console.log(username+' '+activeUsers.has(username));
+  console.log(username+' '+activeUsers.has(username));
   if(!activeUsers.has(username))
     activeUsers.set(username,{
       username:username ,
@@ -52,7 +52,7 @@ app.post('/login' , (req,res) => {
       invites : []      
     });
   
-  //console.log(activeUsers.keys());
+  console.log(activeUsers.keys());
 
   req.session.username = username;
   res.send({result:'success'});
@@ -70,7 +70,7 @@ app.get('/home',(req,res) => {
 
 app.post('/check-invite', (req , res ) => {
   let username = req.session.username;
-  //console.log('checking invite for : '+username);
+  console.log('checking invite for : '+username);
   res.send(activeUsers.get(username));
 });
 
@@ -116,11 +116,11 @@ app.get('/req-new' , (req,res) => {
       activeUser.games.push(gameDetails);
       activeUsers.set(username,activeUser);
     }
-    //console.log('activeUsers : '+activeUsers.get(username).games);
+    console.log('activeUsers : '+activeUsers.get(username).games);
 
     res.sendFile(path.join(__dirname+'/view/start-game.html'));
   }catch(err) {
-    //console.log('err'+err);
+    console.log('err'+err);
     res.send('err:'+err);
   }
 });
@@ -138,9 +138,9 @@ invite.search = ( invitesList , user ) => {
 };
 invite.wait = ( invt , status , callBack , res) => {
   setTimeout(() => {
-    //console.log(invt.status);
+    console.log(invt.status);
    if(invt.status == status) {
-     //console.log('giving callback to '+callBack);
+     console.log('giving callback to '+callBack);
       callBack(res , invt );
       return ;
    }
@@ -150,73 +150,61 @@ invite.wait = ( invt , status , callBack , res) => {
 };
 
 app.post('/invite', ( req , res ) => {
-  try{
-    let username = req.session.username;
-    let gameId = activeUsers.get(username).games[0].id;
-    let body = req.body;
-    //console.log('invite body : ' + body.to);
-    //update invite for user and wait for accepting
-    let toUser = activeUsers.get(body.to);
-    let inviteDetails = {
-      from : username ,
-      to : body.to ,
-      gameId : body.gameId ,
-      status : invite.INVITED
-    };
-    toUser.invites.push(inviteDetails);
-    activeUsers.set(body.to,toUser);
-    //monitor status
-    invite.wait(inviteDetails,invite.ACCEPTED , (res , invt) => {
-      //console.log('He accepted.'+invt.gameId);
-      invt.status = invite.VERIFIED;
-      //update game 
-      let gameDetails = games.get(invt.gameId);
-      gameDetails.secondPlayer = invt.to;
-      //console.log('second player updated : '+gameDetails.secondPlayer);
-      gameDetails.status = game.STARTED;
-      //console.log('gameId:'+body.gameId);
-      games.set(body.gameId , gameDetails);
-      res.send({status : 'accepted' , invite : invt , game : gameDetails });
-    } , res );
-  }catch(err){
-    res.send('err : '+err);
-  }
+  let username = req.session.username;
+  let gameId = activeUsers.get(username).games[0].id;
+  let body = req.body;
+  console.log('invite body : ' + body.to);
+  //update invite for user and wait for accepting
+  let toUser = activeUsers.get(body.to);
+  let inviteDetails = {
+    from : username ,
+    to : body.to ,
+    gameId : body.gameId ,
+    status : invite.INVITED
+  };
+  toUser.invites.push(inviteDetails);
+  activeUsers.set(body.to,toUser);
+  //monitor status
+  invite.wait(inviteDetails,invite.ACCEPTED , (res , invt) => {
+    console.log('He accepted.'+invt.gameId);
+    invt.status = invite.VERIFIED;
+    //update game 
+    let gameDetails = games.get(invt.gameId);
+    gameDetails.secondPlayer = invt.to;
+    console.log('second player updated : '+gameDetails.secondPlayer);
+    gameDetails.status = game.STARTED;
+    console.log('gameId:'+body.gameId);
+    games.set(body.gameId , gameDetails);
+    res.send({status : 'accepted' , invite : invt , game : gameDetails });
+  } , res );
+  
 });
 
 app.post('/accept-invite', ( req , res ) => {
-  try {
-    let username = req.session.username;
-    let body = req.body;
-    //console.log('invite body : ' + JSON.stringify(body));
-    //update status of invite and wait for verify
-    let user = activeUsers.get(username);
-    let invt = invite.search(user.invites , body.from);
-    invt.status = invite.ACCEPTED;
-    //wait for verification 
-    invite.wait(invt,invite.VERIFIED, (res , inviteDetails ) => {    
-      //console.log('He verified.');
-      res.send({status : 'verified' , invite : inviteDetails , game : games.get(body.gameId) });
-    } , res );
-  }catch(err){
-    res.send('err : '+err);
-  }
+  let username = req.session.username;
+  let body = req.body;
+  console.log('invite body : ' + JSON.stringify(body));
+  //update status of invite and wait for verify
+  let user = activeUsers.get(username);
+  let invt = invite.search(user.invites , body.from);
+  invt.status = invite.ACCEPTED;
+  //wait for verification 
+  invite.wait(invt,invite.VERIFIED, (res , inviteDetails ) => {    
+    console.log('He verified.');
+    res.send({status : 'verified' , invite : inviteDetails , game : games.get(body.gameId) });
+  } , res );
 });
 
 app.get('/start', ( req , res ) => {
-   
-  try{
     let gameId = req.query.gameId ;
     let username = req.session.username;
 
-    //console.log('id :'+gameId);
+    console.log('id :'+gameId);
     //be carefull with games.get should pass ineteger as param
     let gameDetails = games.get(parseInt(gameId));
-    ////console.log(JSON.stringify(gameDetails));
+    //console.log(JSON.stringify(gameDetails));
 
     res.render('board', { username:username , game : gameDetails}) ;
-  }catch(err){
-    res.send('err : '+err);
-  }
 
 });
 
@@ -227,7 +215,7 @@ instance.updateSock = (gameId , username,sock) => {
   let gameDetails = games.get(parseInt(gameId));
 
   if(gameDetails==undefined) {
-    //console.log('undefined gamedetails');
+    console.log('undefined gamedetails');
     return;
   }
 
@@ -253,70 +241,66 @@ instance.updateSock = (gameId , username,sock) => {
 };
 
 instance.pass = (event) => {
-//console.log('event : '+JSON.stringify(event));
+console.log('event : '+JSON.stringify(event));
 
   let instanceDetails = instances.get(parseInt(event.gameId));
   let gameDetails = games.get(parseInt(event.gameId));
 
   if(gameDetails==undefined) {
-    //console.log('undefined gamedetails');
+    console.log('undefined gamedetails');
     return;
   }
 
   if(instanceDetails.sockets.second!=undefined)
   instanceDetails.sockets.second.emit('pass',event);
-  //else
-    //console.log('second socket und');
+  else
+    console.log('second socket und');
   if(instanceDetails.sockets.first!=undefined)
     instanceDetails.sockets.first.emit('pass',event);
-  //else
-    //console.log('first socket und');
+  else
+    console.log('first socket und');
 
 } ;
 
 instance.passChat = (msg) => {
-  //console.log('msg : '+JSON.stringify(msg));
+  console.log('msg : '+JSON.stringify(msg));
   
     let instanceDetails = instances.get(parseInt(msg.gameId));
     let gameDetails = games.get(parseInt(msg.gameId));
   
     if(gameDetails==undefined) {
-      //console.log('undefined gamedetails');
+      console.log('undefined gamedetails');
       return;
     }
   
     if(instanceDetails.sockets.second!=undefined)
     instanceDetails.sockets.second.emit('chat',msg);
-    //else
-      //console.log('second socket und');
+    else
+      console.log('second socket und');
     if(instanceDetails.sockets.first!=undefined)
       instanceDetails.sockets.first.emit('chat',msg);
-    //else
-      //console.log('first socket und');
+    else
+      console.log('first socket und');
   
   } ;
 
 io.on('connection', function (socket) {
 
-  try {
-    let username = socket.handshake.query.username;
-    let gameId = socket.handshake.query.gameId;
+  let username = socket.handshake.query.username;
+  let gameId = socket.handshake.query.gameId;
 
-    //console.log('connected :'+username+ ' ' +gameId );
+  console.log('connected :'+username+ ' ' +gameId );
 
-    instance.updateSock(gameId , username , socket);
+  instance.updateSock(gameId , username , socket);
 
-    //socket.emit('instance', inst);
-    
-    socket.on('pass', function (event) {
-        try { instance.pass(event); }catch(err){ res.send('err : '+err); }    
-      });
-    socket.on('chat' , (msg) => {
-        try{ instance.passChat(msg); }catch(err){ res.send('err : '+err); }  
-    });  
-  }catch(err){
-    res.send('err : '+err);
-  }
+  //socket.emit('instance', inst);
+   
+  socket.on('pass', function (event) {
+      instance.pass(event);     
+    });
+  socket.on('chat' , (msg) => {
+      instance.passChat(msg);
+  });  
 
 });
 

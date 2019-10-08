@@ -51,10 +51,10 @@
                     </div>
                 </div>
                 <div class="controls"> 
-                    <div class="control" id="undo" onclick="controls.undo();"> Undo </div>
+                    <div class="control hide" id="undo" onclick="controls.undo();"> Undo </div>
                     <div class="control hide" id="pause" onclick="controls.pause();"> Pause </div>
-                    <div class="control" id="giveup" onclick="controls.giveUp();"> Quit </div>
-                    <div class="control hide" id="exit" onclick="controls.exit();"> Exit </div>
+                    <div class="control hide" id="giveup" onclick="controls.giveUp();"> Giveup </div>
+                    <div class="control" id="exit" onclick="controls.exit();"> Exit </div>
                     <div> </div>
                 </div>
                 <div class="player" id="opponent" > 
@@ -81,11 +81,10 @@
                 </div>
                 
                 <div class="chat-window">
-                    <div class="chats">
-                    </div>
+                    <div class="chats"> </div>
                     <div class="chat-box">
-                        <input type="text" class="input" id="chat-box" onkeypress="checkEnter(event)">
-                        <input type="submit"  class="btn" value="send" onclick="sendMessage()"/>
+                        <input type="text" class="input" id="chat-box">
+                        <input type="submit" class="btn" value="send"/>
                     </div>
                 </div>
             </div><!--

@@ -104,7 +104,7 @@ function setBoard() {
 }
 
 function updateBoard( piecesRefs , piecesPos) {
-  //console.log('updating .. '+piecesRefs+' '+piecesPos );
+  console.log('updating .. '+piecesRefs+' '+piecesPos );
   for(var i=0;i<piecesRefs.length;i++) {
     var piece = piecesRefs[i];
     var row = piece.getAttribute('row');
@@ -158,7 +158,7 @@ function isWithinMoves(row,col,posblMoves) {
 function handlePieceClick(row,col) {
 
   var action = identifyAction(row,col);
-  //console.log('action ' + action);
+  console.log('action ' + action);
   
   //doAction(action,row,col);
 
@@ -181,7 +181,7 @@ var actions = {
 };
 function identifyAction(row,col) {
   var val = boardPos[row][col];
-  //console.log('val'+val+' turn '+playerTurn.turn());
+  console.log('val'+val+' turn '+playerTurn.turn());
   if(playerTurn.turn()<0)
     return actions.INVALID;
 
@@ -238,7 +238,7 @@ function movePiece(from , to) {
 var movesHistory = [];
 var moveHistory = {
   updateHistory : (player , from , to , boardBefore , boardAfter) => {
-    //console.log('boardBefore :'+boardBefore);
+    console.log('boardBefore :'+boardBefore);
     var move = {
       player : player ,
       from : from ,
@@ -268,9 +268,9 @@ function activateAndShowValidMoves(row,col) {
   $.toggleClass(activePiece.element,'active');
 
   var val = boardPos[row][col];
-  //console.log('val'+val);
+  console.log('val'+val);
   var posblMoves = moves.possibleMoves[val](boardPos,activePiece,int(row),int(col));
-  //console.log('psblmovs :'+JSON.stringify(posblMoves));
+  console.log('psblmovs :'+JSON.stringify(posblMoves));
   
   showPossibleMoves(posblMoves);
 }
@@ -284,7 +284,7 @@ function showPossibleMoves(posblMoves) {
   for(var i=0;i<posblMoves.length;i++) {
     var row = posblMoves[i][0];
     var col = posblMoves[i][1];
-    //console.log(' style '+'.piece[row="'+row+'"][col="'+col+'"]');
+    console.log(' style '+'.piece[row="'+row+'"][col="'+col+'"]');
     $.toggleClass($.select('.piece[row="'+row+'"][col="'+col+'"]') , 'active-posib');
   }
 
@@ -381,7 +381,7 @@ moves.filters = {
     return filtered;
   } ,
   obstacleFilter : (unfiltered,piece,flag) => {
-    //console.log('piece:'+piece+' '+flag);
+    console.log('piece:'+piece+' '+flag);
     if(unfiltered==undefined)
       return [];
 
@@ -407,7 +407,7 @@ moves.filters = {
   }  ,
   pawnFilter : (unfiltered,piece) => {
     var filtered = [];
-    //console.log(unfiltered+'\n'+piece.row);
+    console.log(unfiltered+'\n'+piece.row);
     unfiltered[0] = moves.filters.obstacleFilter(unfiltered[0],true);
     if(unfiltered[0]!=undefined && unfiltered[0].length>0)
     if( piece.val>0 ? piece.row == 1 : piece.row==6 )
@@ -415,7 +415,7 @@ moves.filters = {
     else
       filtered.push(unfiltered[0][0]);
 
-      //console.log(filtered);
+      console.log(filtered);
 
     for(var i=0;i<unfiltered[1].length;i++)
         if(boardPos[ unfiltered[1][i][0] ][unfiltered[1][i][1] ] * piece.val < 0 )
@@ -496,17 +496,17 @@ var socket = io.connect(url  , { query : 'username='+username+'&gameId='+gameDet
 
 // handle incoming messages
 socket.on('instance', function (data) {
-    //console.log('instance:'+JSON.stringify(data));
+    console.log('instance:'+JSON.stringify(data));
     instance = data.instance;
   });  
 
 socket.on('pass', function (event) {
-    //console.log('incoming:'+JSON.stringify(event));
+    console.log('incoming:'+JSON.stringify(event));
     doAction(event.action,event.data.row,event.data.col);
   });
 
 socket.on('pass-turn', function (event) {
-    //console.log('incoming:'+JSON.stringify(event));
+    console.log('incoming:'+JSON.stringify(event));
     if(event.event.action=='click') {
       handleRowColClick(event.event.data.row , event.event.data.row);
     }
@@ -523,30 +523,22 @@ socket.on('pass-turn', function (event) {
           }
       };
 
-      //console.log('emitting '+JSON.stringify(data));
+      console.log('emitting '+JSON.stringify(data));
       socket.emit('pass', data);
   }
 
-  function checkEnter(e) {
-    if(e.keyCode==13)
-      sendMessage();
-  }
-
   function sendMessage() {
-    let msgBox = $.select('input#chat-box');
+    let msgBox = $.select('input #msg');
     let msg = {
       username : username , 
         gameId : gameDetails.id ,
         msg : msgBox.value
     }
-    msgBox.value = '';
     socket.emit('chat' , msg);
   }
   socket.on('chat',(msg)=> {
-    //('got '+JSON.stringify(msg));
+    console.log('got '+JSON.stringify(msg));
     let html = '';
-    var cls = msg.username == username ? 'from' : 'to';
-    html+=`<div class="chat `+ cls +`">`+msg.msg+`</div>`;
-    let chatBox = $.select('.chats');
-    chatBox.innerHTML = chatBox.innerHTML + html;
+    html+=`<div class="chat"></div>`;
+    
   });

@@ -81,7 +81,7 @@ players controls
   margin-bottom: 2%;
 }
 .player .out-list {
-display:block;    
+display:;    
 }
 .player .out-list .out-item {
   display: inline-block;

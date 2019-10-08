@@ -265,11 +265,11 @@ instance.pass = (event) => {
 
   if(instanceDetails.sockets.second!=undefined)
   instanceDetails.sockets.second.emit('pass',event);
-  //else
+  else
     //console.log('second socket und');
   if(instanceDetails.sockets.first!=undefined)
     instanceDetails.sockets.first.emit('pass',event);
-  //else
+  else
     //console.log('first socket und');
 
 } ;
@@ -287,11 +287,11 @@ instance.passChat = (msg) => {
   
     if(instanceDetails.sockets.second!=undefined)
     instanceDetails.sockets.second.emit('chat',msg);
-    //else
+    else
       //console.log('second socket und');
     if(instanceDetails.sockets.first!=undefined)
       instanceDetails.sockets.first.emit('chat',msg);
-    //else
+    else
       //console.log('first socket und');
   
   } ;
