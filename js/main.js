@@ -10,10 +10,11 @@ if($.toggleClass==undefined)
 $.toggleClass = (el , className) => {
   el.classList.toggle(className);
 };
-if($.select==undefined)
+
 $.select = (selector) => {
   return document.querySelector(selector);
 };
+
 if($.selectAll==undefined)
 $.selectAll = (selector) => {
   return document.querySelectorAll(selector);
@@ -21,6 +22,7 @@ $.selectAll = (selector) => {
 
 let playerPrfo = {};
 let profLister = [];
+
 let invites = [];
 function init() {
   axios.post('/check-invite',{}).then((res)=>{
@@ -28,12 +30,14 @@ function init() {
     playerPrfo = res.data;
     invites = res.data.invites;
     for(let listener of profLister)
-      listener(res.data);
-    updateInvitesList();
+      try {
+        listener(res.data);
+      }catch(e){  }
+
   });
 }
 
-function updateInvitesList() {
+function updateInvitesList(res) {
   let html = '';
   let invStatus = {
     '1' : 'received' ,
@@ -56,6 +60,7 @@ function updateInvitesList() {
   console.log(html);
   $.select('.invitation-list').innerHTML = html;
 }
+profLister.push(updateInvitesList);
 
 function openGame(id) {
   window.open('start?gameId='+id,'_blank');
@@ -72,5 +77,4 @@ function acceptInv(from) {
   });
 
 }
-
 init();

@@ -80,6 +80,23 @@ players controls
   padding: 1%;
   margin-bottom: 2%;
 }
+.prof {
+  display:block;
+}
+
+.prof .icon {
+  display:inline-block;
+  background-image: url('../img/user1.png') !important;
+  background-size:cover;
+  width:30px;
+  height:30px;
+}
+.prof #name {
+  display:inline-block;
+  position:relative;
+  top:-10px;
+}
+
 .player .out-list {
 display:block;    
 }
@@ -307,6 +324,11 @@ background-size:contain;
 .swal2-popup ,.swal2-actions button {
   font-family: 'Ubuntu' !important;
 }
+
+.undo {
+  width:40px;
+}
+
 /*  
 
 rgba(255, 94, 0, 1)

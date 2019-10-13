@@ -523,8 +523,8 @@ var controls = {
 /* 
 Creating and Initilizing websocket and utility functions  
   */
-//let url = 'http://localhost:8080';
-let url = "https://onlchess.herokuapp.com";
+let url = 'http://localhost:8080';
+//let url = "https://onlchess.herokuapp.com";
 
 var instance ;
 var socket = io.connect(url  , { query : 'username='+username+'&gameId='+gameDetails.id });

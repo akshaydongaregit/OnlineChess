@@ -25,7 +25,7 @@ app.use('/',(req,res,next)=> {
   let url = req.url.toString();
   if(url=='/favicon.ico')
     res.sendFile(path.join(__dirname+'/favicon.ico'));
-  else if(url.includes('login') || url.includes('.js') || url.includes('.css') || url.includes('.ttf') )
+  else if(url.includes('username') || url.includes('login') || url.includes('.js') || url.includes('.css') || url.includes('.ttf') )
     next();
   else if(req.session.username && req.session.username!=undefined){
     //console.log('req '+req.session.username);
@@ -37,7 +37,8 @@ app.use('/',(req,res,next)=> {
 });
 
 app.get('/login' , (req,res) => {
-  res.sendFile(path.join(__dirname+'/view/login.html'));
+  //res.sendFile(path.join(__dirname+'/view/login.html'));
+  res.render('login',{username:null});
 });
 
 let activeUsers = new Map();
@@ -64,7 +65,8 @@ app.get('/logout' , (req,res) => {
 });
 
 app.get('/home',(req,res) => {
-  res.sendFile(path.join(__dirname+'/view/home.html'));
+  //res.sendFile(path.join(__dirname+'/view/home.html'));
+  res.render('home',{username:req.session.username});
 });
 
 
@@ -72,6 +74,11 @@ app.post('/check-invite', (req , res ) => {
   let username = req.session.username;
   //console.log('checking invite for : '+username);
   res.send(activeUsers.get(username));
+});
+
+app.get('/username' , (req,res) => {
+  let username = req.session.username;
+  res.send(username);
 });
 
 let games = new Map();
@@ -118,7 +125,8 @@ app.get('/req-new' , (req,res) => {
     }
     //console.log('activeUsers : '+activeUsers.get(username).games);
 
-    res.sendFile(path.join(__dirname+'/view/start-game.html'));
+    //res.sendFile(path.join(__dirname+'/view/start-game.html'));
+    res.render("start-game" , { username:req.session.username } );
   }catch(err) {
     //console.log('err'+err);
     res.send('err:'+err);
