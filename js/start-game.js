@@ -15,6 +15,7 @@ opponant.oninput = (e) => {
 
 function sendRequest() {
     $.select('.status .open-btn').innerHTML = '';
+    $.select('.spinner').classList.remove('hide');
     $.select('.spinner').classList.add('show');
     let invite = { to:opponant.value , gameId : playerPrfo.games[0].id};
     console.log('invite:'+JSON.stringify(invite));
