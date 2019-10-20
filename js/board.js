@@ -198,8 +198,19 @@ function identifyAction(row,col) {
     else 
       return actions.PLAY_MOVE;
 }
+var audio = {
+  play : (action)=> {
+      let audio;
+      if(action=='click')
+        audio = new Audio('../audio/click.mp3');
+      else if(action=='move')
+        audio = new Audio('../audio/move.mp3');
+      audio.play();
+  }
+};
 
 function playMove(row,col) {
+  
   let piece = pieceAt(row,col);
   if(activePiece!=undefined && isWithinMoves(row,col,activePossibleMoves) ) {
     $.toggleClass(activePiece.element , 'active');
@@ -239,6 +250,8 @@ function showWinMsg(win) {
 }
 
 function movePiece(from , to) {
+  audio.play('move');
+
   var fromCls = iconsSet[boardPos[from.row][from.col]];
   var toCls = iconsSet[boardPos[to.row][to.col]];
   if(fromCls != '' ) {
@@ -306,6 +319,7 @@ function activateAndShowValidMoves(row,col) {
 }
 
 function showPossibleMoves(posblMoves) {
+  audio.play('click');
 
   //clear previous highlighted moves.
   clearPossibleMoves();
@@ -523,8 +537,8 @@ var controls = {
 /* 
 Creating and Initilizing websocket and utility functions  
   */
-//let url = 'http://localhost:8080';
-let url = "https://onlchess.herokuapp.com";
+let url = 'http://localhost:8080';
+//let url = "https://onlchess.herokuapp.com";
 
 var instance ;
 var socket = io.connect(url  , { query : 'username='+username+'&gameId='+gameDetails.id });

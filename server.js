@@ -18,6 +18,7 @@ var port = process.env.PORT || 8080;
 app.use('/css',express.static('css'));
 app.use('/js',express.static('js'));
 app.use('/img',express.static('img'));
+app.use('/audio',express.static('audio'))
 app.use(session({secret:'onlchess@123'}));
 app.use(bodyParser.json());
 
