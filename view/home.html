@@ -4,6 +4,7 @@
 
         <link rel="stylesheet" href="../css/main.css">
         <link rel="stylesheet" href="../css/ui.css">
+        <link rel="stylesheet" href="../css/tab.css">
         <link rel="stylesheet" href="../css/sweetalert2.css">
     </head>
     <body >
@@ -12,12 +13,30 @@
             <div class="card">
                 <button class="btn" value="Start" onclick='$.redirect("/req-new")'> Start New Game</button>
             </div>
-            <div class="card-list invitation-list">
-                
-            </div>
+            <div class="tabs">
+                <div class="tabs-headers"> 
+                    <div class="tab-header active" header="1">
+                        Recieved Invitations
+                    </div>
+                    <div class="tab-header" header="2">
+                        Sent Invitations
+                    </div>
+                </div>
+                <div class="tabs-bodies">
+                    <div class="tab-body active" body="1">  
+                        <div class="card-list invitation-list">
+                        </div>
+                    </div>
+                    <div class="tab-body" body="2">  
+                            <div class="card-list sent-invitation-list">
+                            </div>
+                    </div>
+                </div>
+            </div>    
         </div>
-        
+    
         <script type="text/javascript" src="../js/main.js"></script>
+        <script type="text/javascript" src="../js/tab.js"></script>
         <script type="text/javascript" src="../js/sweetalert2.js"></script>
     </body>
 </html>

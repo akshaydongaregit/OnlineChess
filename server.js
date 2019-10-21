@@ -51,7 +51,8 @@ app.post('/login' , (req,res) => {
     activeUsers.set(username,{
       username:username ,
       games:[] ,
-      invites : []      
+      invites : [] ,
+      sentInvites : []      
     });
   
   //console.log(activeUsers.keys());
@@ -74,7 +75,11 @@ app.get('/home',(req,res) => {
 app.post('/check-invite', (req , res ) => {
   let username = req.session.username;
   //console.log('checking invite for : '+username);
-  res.send(activeUsers.get(username));
+  let data = activeUsers.get(username);
+  data.sentInvites = invite.getFrom(username);
+  data.invites = invite.getTo(username);
+
+  res.send(data);
 });
 
 app.get('/username' , (req,res) => {
@@ -133,6 +138,10 @@ app.get('/req-new' , (req,res) => {
     res.send('err:'+err);
   }
 });
+
+let invites = new Map();
+let invitesCount = 0;
+
 let invite = {};
 invite.INVITED = 1;
 invite.ACCEPTED = 2;
@@ -140,21 +149,38 @@ invite.VERIFIED = 3;
 invite.REJECTED = 4;
 invite.PAUSED = 5;
 
+
 invite.search = ( invitesList , user ) => {
   for( let invt of invitesList )
     if( invt.from == user)
       return invt;
 };
-invite.wait = ( invt , status , callBack , res) => {
+invite.getTo = ( (userId) => {
+  let invtList = [];
+  for( let invt of invites )
+    if( invt[1].to == userId)
+      invtList.push(invt[1]);
+  return invtList;
+});
+
+invite.getFrom = ( (userId) => {
+  let invtList = [];
+  for( let invt of invites )
+    if( invt[1].from == userId)
+      invtList.push(invt[1]);
+  return invtList;
+});
+
+invite.wait = ( invt , statusCheck , callBack , res) => {
   setTimeout(() => {
     //console.log(invt.status);
-   if(invt.status == status) {
+   if(statusCheck(invt.status)) {
      //console.log('giving callback to '+callBack);
       callBack(res , invt );
       return ;
    }
    else
-    invite.wait(invt,status,callBack,res);
+    invite.wait(invt,statusCheck,callBack,res);
   }, 2000);
 };
 
@@ -166,17 +192,32 @@ app.post('/invite', ( req , res ) => {
     //console.log('invite body : ' + body.to);
     //update invite for user and wait for accepting
     let toUser = activeUsers.get(body.to);
+    let fromUser = activeUsers.get(username);
+
     let inviteDetails = {
+      inviteId : invitesCount ,
       from : username ,
       to : body.to ,
       gameId : body.gameId ,
       status : invite.INVITED
     };
-    toUser.invites.push(inviteDetails);
-    activeUsers.set(body.to,toUser);
+    //toUser.invites.push(inviteDetails);
+    //activeUsers.set(body.to,toUser);
+    //fromUser.sentInvites.push(inviteDetails);
+
+    //push to invites
+    invites.set(invitesCount , inviteDetails);
+    invitesCount++;
+
     //monitor status
-    invite.wait(inviteDetails,invite.ACCEPTED , (res , invt) => {
-      //console.log('He accepted.'+invt.gameId);
+    invite.wait(inviteDetails, (status) =>  status == invite.ACCEPTED || status == invite.REJECTED , (res , invt) => {
+      if(invt.status == invite.REJECTED){
+        console.log('He rejected.'+invt.gameId);
+        res.send({status : 'rejected' , invite : invt });
+        return;
+      }
+
+      console.log('He accepted.'+invt.gameId);
       invt.status = invite.VERIFIED;
       //update game 
       let gameDetails = games.get(invt.gameId);
@@ -187,6 +228,7 @@ app.post('/invite', ( req , res ) => {
       games.set(body.gameId , gameDetails);
       res.send({status : 'accepted' , invite : invt , game : gameDetails });
     } , res );
+
   }catch(err){
     res.send('err : '+err);
   }
@@ -199,13 +241,47 @@ app.post('/accept-invite', ( req , res ) => {
     //console.log('invite body : ' + JSON.stringify(body));
     //update status of invite and wait for verify
     let user = activeUsers.get(username);
-    let invt = invite.search(user.invites , body.from);
+    //let invt = invite.search(user.invites , body.from);
+
+    let invt = invites.get(parseInt(body.id));
+    if(invt.status != invite.INVITED){
+      res.send({status : 'error' , invite : inviteDetails });
+      return ;
+    }
+
     invt.status = invite.ACCEPTED;
     //wait for verification 
-    invite.wait(invt,invite.VERIFIED, (res , inviteDetails ) => {    
+    invite.wait(invt,(status) => status == invite.VERIFIED , (res , inviteDetails ) => {    
       //console.log('He verified.');
       res.send({status : 'verified' , invite : inviteDetails , game : games.get(body.gameId) });
     } , res );
+  }catch(err){
+    res.send('err : '+err);
+  }
+});
+
+app.post('/edit-invite', ( req , res ) => {
+  try {
+    let username = req.session.username;
+    let body = req.body;
+    //console.log('invite body : ' + JSON.stringify(body));
+    //update status of invite and wait for verify
+    let user = activeUsers.get(username);
+    //let invt = invite.search(user.invites , body.from);
+
+    let invt = invites.get(parseInt(body.id));
+
+    if(body.action == 'delete' ) {
+      invt.status = invite.COMPLETED;
+      invites.delete(parseInt(body.id));
+      res.send({invt:invt , res :'deleted' });
+    }
+    else if(body.action == 'reject'){
+      invt.status = invite.REJECTED;
+      //invites.delete(parseInt(body.id));
+      res.send({invt:invt , res :'rejected' });
+    }
+
   }catch(err){
     res.send('err : '+err);
   }

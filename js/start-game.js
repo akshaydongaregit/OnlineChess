@@ -25,6 +25,12 @@ function sendRequest() {
         console.log('invite details : '+JSON.stringify(invt));
         $.select('.spinner').classList.remove('show');
         $.select('.spinner').classList.add('hide');
+
+        if(res.data.status == 'rejected'){
+            Swal.fire( '' , opponant.value + ' rejected your request !');
+            return ;
+        }
+
         let html = `<label class="btn warn" onclick='openGame("`+ invt.gameId +`")'> Open Game </label>`;
         $.select('.status .open-btn').innerHTML = html;
     }).catch( (err) => {
