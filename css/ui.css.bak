@@ -481,9 +481,6 @@ border-radius: 5px;
 #header #title .title span{
   font:bold 50% "Segoe UI" , Calibri ;
 }
-#footer span.red {
-    color: #f6100ad6;
-}
 
 #footer span.orange {
     color: #f64f0ad6;

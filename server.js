@@ -9,37 +9,36 @@ const server = http.createServer(app);
 const io = sio(server);
 
 app.set('views', __dirname + '/views');
-app.engine('html',require('ejs').renderFile);
+app.engine('html', require('ejs').renderFile);
 app.set('view engine', 'html');
-app.set('views',path.join(__dirname+'/view'));
+app.set('views', path.join(__dirname + '/view'));
 
 var port = process.env.PORT || 8080;
 
-app.use('/css',express.static('css'));
-app.use('/js',express.static('js'));
-app.use('/img',express.static('img'));
-app.use('/audio',express.static('audio'))
-app.use(session({secret:'onlchess@123'}));
+app.use('/css', express.static('css'));
+app.use('/js', express.static('js'));
+app.use('/img', express.static('img'));
+app.use(session({ secret: 'onlchess@123' }));
 app.use(bodyParser.json());
 
-app.use('/',(req,res,next)=> {
-  let url = req.url.toString();
-  if(url=='/favicon.ico')
-    res.sendFile(path.join(__dirname+'/favicon.ico'));
-  else if(url.includes('username') || url.includes('login') || url.includes('.js') || url.includes('.css') || url.includes('.ttf') )
-    next();
-  else if(req.session.username && req.session.username!=undefined){
-    //console.log('req '+req.session.username);
-    next();
-  }else{
-    //console.log(req.url); 
-    res.redirect('/login');
-  }
+app.use('/', (req, res, next) => {
+    let url = req.url.toString();
+    if (url == '/favicon.ico')
+        res.sendFile(path.join(__dirname + '/favicon.ico'));
+    else if (url.includes('username') || url.includes('login') || url.includes('.js') || url.includes('.css') || url.includes('.ttf'))
+        next();
+    else if (req.session.username && req.session.username != undefined) {
+        //console.log('req '+req.session.username);
+        next();
+    } else {
+        //console.log(req.url); 
+        res.redirect('/login');
+    }
 });
 
-app.get('/login' , (req,res) => {
-  //res.sendFile(path.join(__dirname+'/view/login.html'));
-  res.render('login',{username:null});
+app.get('/login', (req, res) => {
+    //res.sendFile(path.join(__dirname+'/view/login.html'));
+    res.render('login', { username: null });
 });
 
 let activeUsers = new Map();
@@ -57,18 +56,26 @@ app.post('/login' , (req,res) => {
   
   //console.log(activeUsers.keys());
 
-  req.session.username = username;
-  res.send({result:'success'});
+    req.session.username = username;
+    res.send({ result: 'success' });
 });
 
-app.get('/logout' , (req,res) => {
-  req.session.username = undefined;
-  res.redirect('/login');
+app.get('/logout', (req, res) => {
+    req.session.username = undefined;
+    res.redirect('/login');
 });
 
-app.get('/home',(req,res) => {
-  //res.sendFile(path.join(__dirname+'/view/home.html'));
-  res.render('home',{username:req.session.username});
+app.get('/help', (req, res) => {
+    res.render('how-to-play');
+});
+
+app.get('/about', (req, res) => {
+    res.render('about');
+});
+
+app.get('/home', (req, res) => {
+    //res.sendFile(path.join(__dirname+'/view/home.html'));
+    res.render('home', { username: req.session.username });
 });
 
 
@@ -82,9 +89,9 @@ app.post('/check-invite', (req , res ) => {
   res.send(data);
 });
 
-app.get('/username' , (req,res) => {
-  let username = req.session.username;
-  res.send(username);
+app.get('/username', (req, res) => {
+    let username = req.session.username;
+    res.send(username);
 });
 
 let games = new Map();
@@ -94,18 +101,18 @@ game.NEW = 1;
 game.STARTED = 2;
 game.COMPLETED = 3;
 game.getInitialBoard = () => {
-  let board = [
-    [2,3,4,5,6,4,3,2] ,
-    [1,1,1,1,1,1,1,1] ,
-    [0,0,0,0,0,0,0,0] ,
-    [0,0,0,0,0,0,0,0] ,
-    [0,0,0,0,0,0,0,0] ,
-    [0,0,0,0,0,0,0,0] ,
-    [-1,-1,-1,-1,-1,-1,-1,-1] ,
-    [-2,-3,-4,-6,-5,-4,-3,-2] 
-  ];
+    let board = [
+        [2, 3, 4, 5, 6, 4, 3, 2],
+        [1, 1, 1, 1, 1, 1, 1, 1],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [-1, -1, -1, -1, -1, -1, -1, -1],
+        [-2, -3, -4, -6, -5, -4, -3, -2]
+    ];
 
-  return board;
+    return board;
 };
 
 app.get('/req-new' , (req,res) => {

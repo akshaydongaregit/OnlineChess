@@ -10,7 +10,7 @@
             <label class="title"> ChessMania <span> | Ready to play with brain... </span> </label>    
         </div>
         <div class="user-nav">
-           <div class="help" onclick='document.location="/help"'> </div>
+           <div class="help"> </div> 
         </div>
     </div>
     <div id="footer">
