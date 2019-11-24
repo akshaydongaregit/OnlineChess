@@ -587,7 +587,7 @@
  /* 
  Creating and Initilizing websocket and utility functions  
    */
- //let url = 'http://localhost:8080';
+//let url = 'http://localhost:8080';
 let url = "https://onlchess.herokuapp.com";
 
  var instance;
@@ -682,3 +682,4 @@ let url = "https://onlchess.herokuapp.com";
      let chatBox = $.select('.chats');
      chatBox.innerHTML = chatBox.innerHTML + html;
  });
+ 

@@ -292,7 +292,7 @@ border-radius: 5px;
 
 .card-body lable span {
     margin-left: .3%;
-    font: italic bold 90% 'Calibri';
+    font: italic bold 90% 'Ubuntu';
     color: #6b747b;
 }
 
@@ -466,7 +466,7 @@ border-radius: 5px;
     margin: 0px;
     padding: 3px 15%;
     background: rgb(255, 255, 255);
-    font: 90% "Calibri", verdana;
+    font: 90% "Ubuntu", verdana;
     letter-spacing: 1px;
     z-index: 1;
 }
@@ -475,11 +475,11 @@ border-radius: 5px;
   position: absolute;
   top:10%;
   left:3%;
-  font:bold 180%   Consolas , "Segoe UI" , Calibri ;
+  font:bold 180%   Consolas , "Segoe UI" , Ubuntu ;
   color: rgb(10, 30, 102);
 }
 #header #title .title span{
-  font:bold 50% "Segoe UI" , Calibri ;
+  font:bold 50% "Segoe UI" , Ubuntu ;
 }
 #footer span.red {
     color: #f6100ad6;
@@ -521,4 +521,142 @@ custom for home
 
 .tabs-bodies {
   background-color: rgba(0,0,0,0) !important;
+}
+
+/*********************************************
+ style for help cards
+********************************/
+.popup-card{
+    background:#fdfeff;
+    padding:1%;
+    width:fit-content !important;
+    height:fit-content;
+    border-radius:10px;
+    font:normal 100% 'Ubuntu' ,'Segoe UI' , sans-serif;
+    box-shadow:0px 0px 2px 2px #c8deff;
+    border:1px solid #a6caff;
+}
+
+.center{
+    position:fixed;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%)
+}
+
+.popup-card.tip .close-btn{
+    float:right;
+    width:fit-content;
+    height:fit-content;
+    background:#06182800;
+    padding:2px;
+    padding-left:1%;
+    padding-right:1%;
+    margin-right:0%;
+    font:bold 100% 'Segoe UI';
+    color:#1a81db;
+    border-radius:50px;
+}
+.popup-card.tip .close-btn:hover{
+    background:#061828;
+}
+
+.popup-card.tip .close-btn:before{
+    content:'X'
+}
+
+.popup-card.tip .card-head{
+    marging:0px;
+    background:#ff000000;
+    width:100%;
+    height:fit-content;
+    padding:2px;
+    margin-bottom:5px;
+    font-size:90%;
+    padding-left:1%;
+    color:#16bfe5;
+    font:bold 90% 'Ubuntu';
+}
+
+.popup-card.tip .card-body{
+    margin-top:2%;
+    margin-left:2%;
+    color: #525d67;
+}
+.popup-card.tip .card-body img{
+    margin-top:2%;
+    margin-left:4%;
+    border-radius:2px;
+    box-shadow:0px 0px 2px 2px #f0f5f9;
+}
+
+.popup-card.tip .card-footer{
+    margin-top:2%;
+}
+.popup-card.tip .card-footer button {
+    background:#0999ff;
+    border:1px solid #a0d3ff;
+    border-radius:5px;
+    padding:6px 12px 6px 12px;
+    box-shadow:0px 0px 2px 2px #79bcf6;
+    font: bold 95% 'Ubuntu';
+    color:#fefefe;
+}
+
+.popup-card.tip .footer button:hover{
+    background:#f0f8ff08;
+    color:#03A9F4;
+}
+.popup-card.tip .card-footer button.right{
+    float:right;
+    margin-right:5%;
+}
+.popup-card.tip .card-footer button.transparent{
+    background:#00000000;
+    color:#0999ff;
+}
+
+.popup-card.tip .card-footer button.dark{
+    background:#170101;
+    color:#feffff;
+}
+.popup-card.tip .card-footer button.dark:hover{
+    background:#feffff;
+    color:#0999ff;
+}
+
+
+/*green theme*/
+.popup-card.green{
+    box-shadow:0px 0px 2px 2px #a5fd9f;
+    border:1px solid #b0ffbd;
+}
+.popup-card.tip.green .card-head{
+    color:#17d60a;
+    font:bold 90% 'Ubuntu' !important;
+}
+.popup-card.tip.green .body{
+    color:#06420c;
+}
+.popup-card.tip.green button{
+    background:#05b10d;
+    color:#e7f6e7;
+    border:1px solid #b2f3bd;
+    box-shadow:0px 0px 2px 2px #79f67d;
+}
+
+.popup-card.tip.green .card-footer button.transparent{
+    background:#01100300;
+    color:#40da40;
+    border:1px solid #43e65e;
+    box-shadow:0px 0px 2px 2px #5cf160;
+}
+.popup-card.tip.green .card-footer button.dark{
+    background:#011003fa;
+    color:#f8faf8;
+    border:1px solid #43e65e;
+    box-shadow:0px 0px 2px 2px #5cf160;
+}
+.popup-card.tip.green .close-btn{
+    color:#60d160;
 }

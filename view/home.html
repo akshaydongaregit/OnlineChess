@@ -11,7 +11,8 @@
         <% include menu.html %>
         <div class="body">
             <div class="card">
-                <button class="btn" value="Start" onclick='$.redirect("/req-new")'> Start New Game</button>
+                <button class="btn" id="start-new" value="Start" onclick='$.redirect("/req-new")'> Start New Game</button>
+                <button class="btn" id="how-to-start" value="tips" onclick='showTips()'> See how to start new Game </button>
             </div>
             <div class="tabs">
                 <div class="tabs-headers"> 
@@ -32,11 +33,19 @@
                             </div>
                     </div>
                 </div>
-            </div>    
+            </div>
+
         </div>
-    
+        <div id="tips"></div>
         <script type="text/javascript" src="../js/main.js"></script>
         <script type="text/javascript" src="../js/tab.js"></script>
         <script type="text/javascript" src="../js/sweetalert2.js"></script>
+
+        <script>
+            let show_tips = <%= tips %> ;
+            if(show_tips)
+                tips.show(1);
+        </script>
+
     </body>
 </html>

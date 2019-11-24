@@ -18,6 +18,8 @@ var port = process.env.PORT || 8080;
 app.use('/css', express.static('css'));
 app.use('/js', express.static('js'));
 app.use('/img', express.static('img'));
+app.use('/docs', express.static('docs'));
+
 app.use(session({ secret: 'onlchess@123' }));
 app.use(bodyParser.json());
 
@@ -75,7 +77,7 @@ app.get('/about', (req, res) => {
 
 app.get('/home', (req, res) => {
     //res.sendFile(path.join(__dirname+'/view/home.html'));
-    res.render('home', { username: req.session.username });
+    res.render('home', { username: req.session.username , tips: req.query.tips});
 });
 
 
@@ -219,12 +221,12 @@ app.post('/invite', ( req , res ) => {
     //monitor status
     invite.wait(inviteDetails, (status) =>  status == invite.ACCEPTED || status == invite.REJECTED , (res , invt) => {
       if(invt.status == invite.REJECTED){
-        console.log('He rejected.'+invt.gameId);
+        //console.log('He rejected.'+invt.gameId);
         res.send({status : 'rejected' , invite : invt });
         return;
       }
 
-      console.log('He accepted.'+invt.gameId);
+      //console.log('He accepted.'+invt.gameId);
       invt.status = invite.VERIFIED;
       //update game 
       let gameDetails = games.get(invt.gameId);
@@ -345,7 +347,7 @@ instance.updateSock = (gameId , username,sock) => {
 };
 
 instance.pass = (event,data) => {
-console.log('event : '+event+' data :'+JSON.stringify(data));
+  //console.log('event : '+event+' data :'+JSON.stringify(data));
 
   let instanceDetails = instances.get(parseInt(data.gameId));
   let gameDetails = games.get(parseInt(data.gameId));

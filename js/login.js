@@ -4,7 +4,7 @@ function login() {
         .then((result) => {
             console.log(result);
             if (result.data.result == 'success')
-                window.location = '/home';
+                window.location = '/home?tips=true';
         });
 
 }
