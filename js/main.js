@@ -170,7 +170,7 @@ tipsList.push({
 tipsList.push({
   id:7 ,
   tip:`After opeing the game you will see Chess board as below.</br>The player who has sent invite can play first.<br>Inviter will get green pices. Who has accepted the invitaion will get red pices.`,
-  image:'docs/screens/board.jpg' 
+  image:'docs/screens/board.JPG' 
 });
 tipsList.push({
   id:8 ,
