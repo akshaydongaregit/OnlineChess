@@ -136,7 +136,7 @@ init();
 let tipsList = [];
 tipsList.push({
     id:1 ,
-    tip:`Enter unique login id and click start. This id will be used by others while sending you the invite.`,
+    tip:`Welcome !!! Enter unique login id and click start. This id will be used by others while sending you the invite.`,
     image:'docs/screens/login1.png' 
 });
 tipsList.push({
